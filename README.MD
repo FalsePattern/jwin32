@@ -3,14 +3,15 @@ A Project Panama-based mapping + wrapper generator for win32 headers.
 
 ## Table of Contents
 0. [Disclaimer](#0-disclaimer)
-1. [Dependencies](#1-dependencies)
-2. [Generating panama mappings](#2-generating-panama-mappings)
-3. [Generating wrappers](#3-generating-wrappers)
-4. [Installing to local maven repository](#4-installing-to-local-maven-repository)
-5. [Running code with panama](#5-running-code-with-panama)
-6. [Linking libraries](#6-linking-libraries)
-7. [What next?](#7-what-next)
-8. [Inspiration](#8-inspiration)
+1. [What is Project Panama](#1-what-is-project-panama)
+2. [Dependencies](#2-dependencies)
+3. [Generating panama mappings](#3-generating-panama-mappings)
+4. [Generating wrappers](#4-generating-wrappers)
+5. [Installing to local maven repository](#5-installing-to-local-maven-repository)
+6. [Running code with panama](#6-running-code-with-panama)
+7. [Linking libraries](#7-linking-libraries)
+8. [What next?](#8-what-next)
+9. [Inspiration](#9-inspiration)
 
 ## 0. Disclaimer
 This project is not endorsed by nor affiliated with either Microsoft, Oracle, nor the OpenJDK project.
@@ -21,9 +22,18 @@ The project source code does not include generated and mapped files for two reas
 1. There's a lot of files (more than 10k after every class is generated)
 2. There might be licensing issues with some Windows.h struct names (see the [disclaimer](#0-disclaimer))
 
-## 1. Dependencies
+## 1. What is Project Panama
+Java's project panama is an incubating feature of java, only accessible on a specific branch, is a brand new solution that gets rid of writing JNI or JNA wrappers for native libraries, and instead almost completely automates the process, or hides it behind neat and efficient wrapper classes.
+* Project Panama: https://openjdk.java.net/projects/panama/
+* Project Panama Builds: https://jdk.java.net/panama/
+
+Important reading before experimenting:
+* handling native memory: https://github.com/openjdk/panama-foreign/blob/foreign-jextract/doc/panama_memaccess.md
+* handling native functions: https://github.com/openjdk/panama-foreign/blob/foreign-jextract/doc/panama_ffi.md
+
+## 2. Dependencies
 1. ### Project Panama
-   1. Download and extract JDK panama from this URL: https://jdk.java.net/panama
+   1. Download and extract JDK-panama from this URL: https://jdk.java.net/panama
         
        (The latest version at the time of writing is `17-panama+3-167`)
    2. Next, you have to replace your currently installed java with Panama in the PATH and JAVA_HOME system variables:
@@ -57,7 +67,7 @@ download the Windows SDK:
 
 3. ### At this point I recommend a system restart to make sure that every program has the correct system variables available.
 
-## 2. Generating panama mappings
+## 3. Generating panama mappings
 1. Run the `generate_win.bat` file. After it runs, the last line should say `Press any key to exit...`.
 
    Make sure the output of the script is EXACTLY the following:
@@ -84,13 +94,13 @@ If the output is different, there may be 3 reasons:
    operable program or batch file.
    Press any key to exit...
    ```
-   Solution: Go through the [dependencies](#1-dependencies) again and make sure you verify that panama works.
+   Solution: Go through the [dependencies](#2-dependencies) again and make sure you verify that panama works.
 2. You installed the Windows SDK incorrectly. In this case it will say either that `'Windows.h' file not found`, or `'d3d11.h' file not found`.
-   Solution: Go through the [dependencies](#1-dependencies) again and make sure you verify that the Windows SDK is installed correctly. As a last resort, you can install Visual Studio 2019.
+   Solution: Go through the [dependencies](#2-dependencies) again and make sure you verify that the Windows SDK is installed correctly. As a last resort, you can install Visual Studio 2019.
 3. Something else:
    What is most likely in this case is that either a new Windows SDK or Project Panama version has released. Please check the open issues, and if there's no issue with your specific script output, please open a issue if the specific output hasn't been reported yet.
 
-## 3. Generating wrappers
+## 4. Generating wrappers
 After the panama mappings have been generated, generating the wrapper classes is recommended.
 
 These wrapper classes simplify interaction with structs and COM objects, and also turn many `#define`s into `public static final` variables, which can then be used in switch statements (`jextract` puts `#define`s into getter methods, which cannot be used with switch statements).
@@ -101,19 +111,19 @@ Wrapper classes are just the original struct/COM interface name with a `_J` suff
 
 Extracted defines are placed in the `win32.mapped` package, separated by category using classes with descriptive names.
 
-## 4. Installing to local maven repository
+## 5. Installing to local maven repository
 At this point, you can install the mappings to your local maven repo by running `mvn install`,  however, make sure you DON'T run the `clean` phase, because then maven will have to recompile the panama mappings again.
 
 Because Project Panama is still a java incubator feature, and it requires extensive manual configuration of the system to run properly, no precompiled binaries will be distributed. By manually compiling the library yourself, you also make sure that your system is set up properly.
 
 After installing, you can use the project as a regular maven dependency in your project.
 
-## 5. Running code with panama
+## 6. Running code with panama
 By default, foreign (native) access, even in Project Panama, is blocked. To solve this, you have to provide the following command line arguments to java when running programs that contain panama code: `-Dforeign.restricted=permit --enable-native-access=ALL-UNNAMED --add-modules jdk.incubator.foreign`
 
 You can inspect this project's pom.xml to see how to do that with maven. 
 
-## 6. Linking libraries
+## 7. Linking libraries
 Panama does NOT link code by default, so for any external libraries that you want to use, you first need to load the appropriate libraries.
 
 For that you need to use java's built-in `System.loadLibrary(...);` call. In short: You either have to have the dll/so file in PATH, or in the working directory, and invoke `System.loadLibrary(<library>);`, where `<library>` is the library's filename without the .so/.dll extension.
@@ -137,11 +147,11 @@ System.loadLibrary("User32");
 ```
 Note the lack of file extensions.
 
-## 7. What next?
+## 8. What next?
 Over the course of the next few months I will continue polishing the generator code and extract frequently used defines into wrapper classes to improve their usage in switch statements even further.
 I also want to fix the main drawback of struct wrappers, which is: if you have a struct composed of smaller sub-structs (for example, `DXGI_SWAP_CHAIN_DESC`), the wrapper library does create the getters/setters properly, so you have to fall back to the pure panama mappings.
 
-## 8. Inspiration
+## 9. Inspiration
 I originally came up with this idea after having a small spike of interest in direct3D, but found C++ programming to not be my cup of tea.
 I wanted to do direct3d stuff in java, but no matter how much I looked, I couldn't find _any_ up-to-date wrapper for direct3d and win32, other than the basic win32 mappings inside LWJGL, which, not surprisingly, don't contain D3D stuff.
 
