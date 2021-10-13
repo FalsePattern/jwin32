@@ -1,4 +1,4 @@
-# Win32Natives
+# JWin32
 A Project Panama-based mapping + wrapper generator for win32 headers.
 
 ## Table of Contents
