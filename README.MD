@@ -46,7 +46,7 @@ Important reading before experimenting:
    4. Also enter `jextract -version`into the same command prompt. If the output starts with
       `WARNING: Using incubator modules: jdk.incubator.foreign, jdk.incubator.jextract`, panama is correctly
       installed.
-3. ### Windows SDK
+2. ### Windows SDK
    After you've installed project panama, you also need the header files that are then passed to jextract.
 
 
