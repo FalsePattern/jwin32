@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class CClass {
@@ -13,7 +14,7 @@ public class CClass {
     public CType superclass;
     private final Set<CType> imports = new HashSet<>();
     private final List<CField> fields = new ArrayList<>();
-    private final List<CConstructor> constructors = new ArrayList<>();
+    public final List<CConstructor> constructors = new ArrayList<>();
     private final List<CMethod> methods = new ArrayList<>();
 
     public void importImplicitly(CType type) {
@@ -65,7 +66,7 @@ public class CClass {
                }
                """.formatted(
                        pkg,
-                imports.stream().map(CType::asImport).sorted().collect(Collectors.joining()),
+                imports.stream().filter(Predicate.not(CType::primitive)).filter(imp -> !imp.name().equals(pkg + "." + imp.simpleName())).map(CType::asImport).sorted().collect(Collectors.joining()),
                 superclass != null ? superclass.name().equals(pkg + "." + superclass.simpleName()) ? "" : superclass.name() : "",
                 accessSpecifier,
                 name,
