@@ -18,9 +18,7 @@ This project is not endorsed by nor affiliated with either Microsoft, Oracle, no
 
 MSVC, Windows.h, d3d11.h and the Windows SDK are owned by Microsoft, and due to licensing issues, are not included as a part of this source code.
 
-The project source code does not include generated and mapped files for two reasons:
-1. There's a lot of files (more than 10k after every class is generated)
-2. There might be licensing issues with some Windows.h struct names (see the [disclaimer](#0-disclaimer))
+The project source code does not include generated and mapped files because there's a lot of files (more than 10k after every class is generated)
 
 ## 1. What is Project Panama
 Java's project panama is an incubating feature of java, only accessible on a specific branch, is a brand new solution that gets rid of writing JNI or JNA wrappers for native libraries, and instead almost completely automates the process, or hides it behind neat and efficient wrapper classes.
