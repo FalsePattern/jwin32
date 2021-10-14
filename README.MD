@@ -169,9 +169,9 @@ So it seems like this project brings Java and Microsoft back together, a bit lik
 ## 10. Changelog
 ### [0.2.0] - 2021-10-14
 ####Added
-Automatic fixing for known issues in:
-* ID3DInclude
-* XMLDOMDocumentEvents
+* Automatic fixing for known issues in:
+  * ID3DInclude
+  * XMLDOMDocumentEvents
 ####Changed
 * Reimplemented struct generator. Nested structs are now supported.
 ####Removed
@@ -207,4 +207,4 @@ Automatic fixing for known issues in:
     If a struct contains one of these as a sub-struct, that sub-struct will not receive a wrapper field.
 
 ### [0.0.0-0.1.1]
-Extremely early code, no change tracking was done
+* Extremely early code, no change tracking was done
