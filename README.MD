@@ -12,6 +12,7 @@ A Project Panama-based mapping + wrapper generator for win32 headers.
 7. [Linking libraries](#7-linking-libraries)
 8. [What next?](#8-what-next)
 9. [Inspiration](#9-inspiration)
+10. [Changelog](#10-changelog)
 
 ## 0. Disclaimer
 This project is not endorsed by nor affiliated with either Microsoft, Oracle, nor the OpenJDK project.
@@ -146,8 +147,13 @@ System.loadLibrary("User32");
 Note the lack of file extensions.
 
 ## 8. What next?
-Over the course of the next few months I will continue polishing the generator code and extract frequently used defines into wrapper classes to improve their usage in switch statements even further.
-I also want to fix the main drawback of struct wrappers, which is: if you have a struct composed of smaller sub-structs (for example, `DXGI_SWAP_CHAIN_DESC`), the wrapper library does create the getters/setters properly, so you have to fall back to the pure panama mappings.
+Over the course of the next few months I will continue polishing the generator code and add more quality of life wrappers.
+
+Goals:
+- [x] Create wrapper code for structs inside structs
+- [ ] Create wrapper code for arrays inside structs
+- [ ] Create wrapper classes for common defines
+  - [x] WM_*
 
 ## 9. Inspiration
 I originally came up with this idea after having a small spike of interest in direct3D, but found C++ programming to not be my cup of tea.
@@ -159,3 +165,46 @@ A bit of lore between MS and Java, I found while researching:
 
 While scouting the web for COM implementations in java, i stumbled upon an article mentioning an abandoned programming language called J++, and lawsuit between Sun Microsystems and Microsoft, which eventually lead to the creation of the .NET framework and the C# programming language.
 So it seems like this project brings Java and Microsoft back together, a bit like how it was 20 years ago.
+
+## 10. Changelog
+### [0.2.0] - 2021-10-14
+####Added
+Automatic fixing for known issues in:
+* ID3DInclude
+* XMLDOMDocumentEvents
+####Changed
+* Reimplemented struct generator. Nested structs are now supported.
+####Removed
+* The following win32 structs will not have wrappers generated, due to alignment incompatibility:
+  * _MMIOINFO
+  * DRVCONFIGINFOEX
+  * IMAGE_AUX_SYMBOL_TOKEN_DEF
+  * tagDRVCONFIGINFO
+  * midihdr_tag
+  * tagMCI_ANIM_OPEN_PARMSA
+  * tagMCI_ANIM_OPEN_PARMSW
+  * tagMCI_ANIM_WINDOW_PARMSA
+  * tagMCI_ANIM_WINDOW_PARMSW
+  * tagMCI_BREAK_PARMS
+  * tagMCI_OPEN_PARMSA
+  * tagMCI_OPEN_PARMSW
+  * tagMCI_OVLY_OPEN_PARMSA
+  * tagMCI_OVLY_OPEN_PARMSW
+  * tagMCI_OVLY_WINDOW_PARMSA
+  * tagMCI_OVLY_WINDOW_PARMSW
+  * tagMCI_WAVE_OPEN_PARMSA
+  * tagMCI_WAVE_OPEN_PARMSW
+  * tagMETAHEADER
+  * tagMIXERLINEA
+  * tagMIXERLINECONTROLSA
+  * tagMIXERLINECONTROLSW
+  * tagMIXERLINEW
+  * tagBITMAPFILEHEADER
+  * tMIXERCONTROLDETAILS
+
+    including all structs derived from these.
+  
+    If a struct contains one of these as a sub-struct, that sub-struct will not receive a wrapper field.
+
+### [0.0.0-0.1.1]
+Extremely early code, no change tracking was done
