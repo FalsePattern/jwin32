@@ -163,6 +163,12 @@ While scouting the web for COM implementations in java, i stumbled upon an artic
 So it seems like this project brings Java and Microsoft back together, a bit like how it was 20 years ago.
 
 ## 9. Changelog
+### [0.4.0] - 2021-10-15
+####Added
+* Memory manipulation helper classes inside `com.falsepattern.jwin32.memory`
+####Changed
+* Moved code generation stuff into "internal" class to signal to developers to not use those
+* Reworked COM wrappers to use MemoryAddress instead of MemorySegment in the constructor argument, saving some client-side conversion
 ### [0.3.1] - 2021-10-15
 ####Changed
 * Now generates less whitespace into wrapper classes
