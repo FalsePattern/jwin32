@@ -8,7 +8,7 @@ public class CConstructor implements TypeCarrier {
     public final StringBuilder code = new StringBuilder();
 
     public String toString(String className) {
-        return "%s%s(%s) {\n%s}\n".formatted(
+        return "%s%s(%s){\n%s}".formatted(
                 accessSpecifier.toString(),
                 className,
                 paramList.toString(),

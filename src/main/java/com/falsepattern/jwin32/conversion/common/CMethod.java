@@ -12,7 +12,7 @@ public class CMethod implements TypeCarrier {
 
     @Override
     public String toString() {
-        return "%s%s %s(%s) {\n%s}\n".formatted(
+        return "%s%s %s(%s){\n%s}".formatted(
                 accessSpecifier.toString(),
                 returnType.simpleName(),
                 name,

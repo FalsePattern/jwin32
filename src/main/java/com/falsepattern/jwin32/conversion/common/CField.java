@@ -7,7 +7,7 @@ public class CField {
     public final StringBuilder initializer = new StringBuilder();
     @Override
     public String toString() {
-        return "%s%s %s%s;\n".formatted(accessSpecifier.toString(), type.simpleName(), name, initializer.length() > 0 ? " = " + initializer : "");
+        return "%s%s %s%s;".formatted(accessSpecifier.toString(), type.simpleName(), name, initializer.length() > 0 ? " = " + initializer : "");
     }
 
     public CType type(){return type;}
