@@ -69,4 +69,13 @@
         </plugins>
     </build>
 
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub FalsePattern Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/FalsePattern/JWin32</url>
+        </repository>
+    </distributionManagement>
+
+
 </project>
