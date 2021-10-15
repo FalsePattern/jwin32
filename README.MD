@@ -6,13 +6,12 @@ A Project Panama-based mapping + wrapper generator for win32 headers.
 1. [What is Project Panama](#1-what-is-project-panama)
 2. [Dependencies](#2-dependencies)
 3. [Generating panama mappings](#3-generating-panama-mappings)
-4. [Generating wrappers](#4-generating-wrappers)
-5. [Installing to local maven repository](#5-installing-to-local-maven-repository)
-6. [Running code with panama](#6-running-code-with-panama)
-7. [Linking libraries](#7-linking-libraries)
-8. [What next?](#8-what-next)
-9. [Inspiration](#9-inspiration)
-10. [Changelog](#10-changelog)
+4. [Generating wrappers and jar](#4-generating-wrappers-and-jar)
+6. [Running code with panama](#5-running-code-with-panama)
+7. [Linking libraries](#6-linking-libraries)
+8. [What next?](#7-what-next)
+9. [Inspiration](#8-inspiration)
+10. [Changelog](#9-changelog)
 
 ## 0. Disclaimer
 This project is not endorsed by nor affiliated with either Microsoft, Oracle, nor the OpenJDK project.
@@ -99,30 +98,23 @@ If the output is different, there may be 3 reasons:
 3. Something else:
    What is most likely in this case is that either a new Windows SDK or Project Panama version has released. Please check the open issues, and if there's no issue with your specific script output, please open a issue if the specific output hasn't been reported yet.
 
-## 4. Generating wrappers
-After the panama mappings have been generated, generating the wrapper classes is recommended.
+## 4. Generating wrappers and jar
+After the panama mappings have been generated, the next step is generating the wrappers and the jar file.
 
 These wrapper classes simplify interaction with structs and COM objects, and also turn many `#define`s into `public static final` variables, which can then be used in switch statements (`jextract` puts `#define`s into getter methods, which cannot be used with switch statements).
 
-To do this, simply run `mvn clean compile exec:exec` and wait until it finishes.
+To do this, simply run `mvn clean compile exec:exec compile package` and wait until it finishes. (There are two compile steps, because the `exec:exec` step generates additional source files)
 
 Wrapper classes are just the original struct/COM interface name with a `_J` suffix.
 
-Extracted defines are placed in the `win32.mapped` package, separated by category using classes with descriptive names.
+Wrapper code is placed in the `win32.mapped` package, more precisely, structs get put in `win32.mapped.struct`, COM interfaces in `win32.mapped.com`, and `#define`d constants in the `win32.mapped.Constants` class.
 
-## 5. Installing to local maven repository
-At this point, you can install the mappings to your local maven repo by running `mvn install`,  however, make sure you DON'T run the `clean` phase, because then maven will have to recompile the panama mappings again.
-
-Because Project Panama is still a java incubator feature, and it requires extensive manual configuration of the system to run properly, no precompiled binaries will be distributed. By manually compiling the library yourself, you also make sure that your system is set up properly.
-
-After installing, you can use the project as a regular maven dependency in your project.
-
-## 6. Running code with panama
+## 5. Running code with panama
 By default, foreign (native) access, even in Project Panama, is blocked. To solve this, you have to provide the following command line arguments to java when running programs that contain panama code: `-Dforeign.restricted=permit --enable-native-access=ALL-UNNAMED --add-modules jdk.incubator.foreign`
 
 You can inspect this project's pom.xml to see how to do that with maven. 
 
-## 7. Linking libraries
+## 6. Linking libraries
 Panama does NOT link code by default, so for any external libraries that you want to use, you first need to load the appropriate libraries.
 
 For that you need to use java's built-in `System.loadLibrary(...);` call. In short: You either have to have the dll/so file in PATH, or in the working directory, and invoke `System.loadLibrary(<library>);`, where `<library>` is the library's filename without the .so/.dll extension.
@@ -146,7 +138,7 @@ System.loadLibrary("User32");
 ```
 Note the lack of file extensions.
 
-## 8. What next?
+## 7. What next?
 Over the course of the next few months I will continue polishing the generator code and add more quality of life wrappers.
 
 Goals:
@@ -154,7 +146,7 @@ Goals:
 - [ ] Create wrapper code for arrays inside structs
 - [x] Create wrapper classes for constant defines
 
-## 9. Inspiration
+## 8. Inspiration
 I originally came up with this idea after having a small spike of interest in direct3D, but found C++ programming to not be my cup of tea.
 I wanted to do direct3d stuff in java, but no matter how much I looked, I couldn't find _any_ up-to-date wrapper for direct3d and win32, other than the basic win32 mappings inside LWJGL, which, not surprisingly, don't contain D3D stuff.
 
@@ -165,7 +157,7 @@ A bit of lore between MS and Java, I found while researching:
 While scouting the web for COM implementations in java, i stumbled upon an article mentioning an abandoned programming language called J++, and lawsuit between Sun Microsystems and Microsoft, which eventually lead to the creation of the .NET framework and the C# programming language.
 So it seems like this project brings Java and Microsoft back together, a bit like how it was 20 years ago.
 
-## 10. Changelog
+## 9. Changelog
 ### [0.3.1] - 2021-10-15
 ####Changed
 * Now generates less whitespace into wrapper classes
