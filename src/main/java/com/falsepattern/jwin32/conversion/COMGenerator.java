@@ -1,21 +1,16 @@
 package com.falsepattern.jwin32.conversion;
 
 import com.falsepattern.jwin32.conversion.common.*;
-import jdk.incubator.foreign.MemoryAddress;
-import jdk.incubator.foreign.MemorySegment;
-import jdk.incubator.foreign.ResourceScope;
-import win32.pure.Win32;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
-public class COMGenerator {
-    private static final CType RESOURCE_SCOPE = new CType(ResourceScope.class);
-    private static final CType MEMORY_SEGMENT = new CType(MemorySegment.class);
-    private static final CType MEMORY_ADDRESS = new CType(MemoryAddress.class);
-    private static final CType WIN32 = new CType(Win32.class);
+import static com.falsepattern.jwin32.conversion.common.CType.*;
 
-    private static final CParameter MEMORY_SEGMENT_PARAM = new CParameter(MEMORY_SEGMENT, "segment");
+public class COMGenerator {
+
+    private static final CParameter MEMORY_ADDRESS_PARAM = new CParameter(MEMORY_ADDRESS, "address" +
+                                                                                          "");
 
 
     private static final CField SCOPE = new CField();
@@ -50,15 +45,15 @@ public class COMGenerator {
         com.addConstructor(getConstructor(baseClass, vtbl, ifMethods));
         if (!com.name.equals("ID3DInclude_J"))
             com.addMethod(getREFIIDMethod(baseClass));
-        Arrays.stream(ifMethods).forEach(method -> {
+        for (Method method : ifMethods) {
             var wrapper = toWrapper(method);
             if (wrapper == null) {
                 System.err.println("Failed to generate wrapper method for " + baseClass.getSimpleName() + "." + method.getName() + "!");
-                return;
+                continue;
             }
-            com.addField(toField(vtbl, method));
+            com.addField(toField(method));
             com.addMethod(wrapper);
-        });
+        }
         return com;
     }
 
@@ -76,7 +71,7 @@ public class COMGenerator {
         return method;
     }
 
-    private static CField toField(Class<?> vtbl, Method method) {
+    private static CField toField(Method method) {
         var field = new CField();
         field.accessSpecifier.fin = true;
         field.type = new CType(method.getReturnType());
@@ -88,9 +83,10 @@ public class COMGenerator {
         var vtblName = vtbl.getSimpleName();
         var constructor = new CConstructor();
         constructor.accessSpecifier.pub = true;
-        constructor.paramList.add(MEMORY_SEGMENT_PARAM);
+        constructor.paramList.add(MEMORY_ADDRESS_PARAM);
         constructor.code
-                .append("this.obj = segment.address();\n"
+                .append("var segment = ").append(baseClass.getSimpleName()).append(".ofAddress(address, scope);")
+                .append("this.obj = address;\n"
                 + "vtbl = ").append(vtblName).append(".ofAddress(").append(baseClass.getSimpleName()).append(".lpVtbl$get(segment), scope);\n");
         for (var method: ifMethods) {
             constructor.code.append(method.getName()).append(" = ").append(vtblName).append(".").append(method.getName()).append("(vtbl);\n");
