@@ -154,6 +154,6 @@ public class Struct {
     }
 
     public void implementSequenceLayoutGetterSetter(List<Struct> allStructs) {
-
+        //TODO
     }
 }

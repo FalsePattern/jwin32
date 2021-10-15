@@ -3,17 +3,13 @@ package com.falsepattern.jwin32.conversion;
 import com.falsepattern.jwin32.conversion.common.CClass;
 import com.falsepattern.jwin32.conversion.common.CField;
 import com.falsepattern.jwin32.conversion.common.CType;
-import win32.pure.Win32;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
-import java.util.stream.Stream;
 
 public class ConstMapper {
     private static final Pattern DEFINED_INT = Pattern.compile("public static int (\\w+)\\(\\) \\{\\n {8}return (\\(int\\)\\d+L);\\n {4}}\n");

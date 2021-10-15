@@ -1,11 +1,7 @@
 package com.falsepattern.jwin32.conversion;
 
 import com.falsepattern.jwin32.conversion.common.CClass;
-import com.falsepattern.jwin32.conversion.common.CConstructor;
-import com.falsepattern.jwin32.conversion.common.CField;
-import com.falsepattern.jwin32.conversion.common.CType;
 import jdk.incubator.foreign.GroupLayout;
-import win32.pure.*;
 
 import java.io.File;
 import java.io.IOException;
