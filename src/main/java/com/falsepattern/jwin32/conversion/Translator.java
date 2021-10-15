@@ -154,33 +154,11 @@ public class Translator {
             }
         });
 
-        //WM_values
-        var fields = Arrays.stream(Win32.class.getMethods())
-                .parallel()
-                .filter((method) -> method.getName().startsWith("WM_") && method.getReturnType().equals(int.class))
-                .map((method) -> {
-                    method.setAccessible(true);
-                    var field = new CField();
-                    field.accessSpecifier.pub = field.accessSpecifier.stat = field.accessSpecifier.fin = true;
-                    field.name = method.getName();
-                    field.type = new CType(int.class);
-                    try {
-                        field.initializer.append("(int)").append(method.invoke(null));
-                    } catch (IllegalAccessException | InvocationTargetException e) {
-                        throw new Error(e);
-                    }
-                    return field;
-                })
-                .sorted(Comparator.comparing((field) -> field.name))
-                .toList();
 
-        var clazz = new CClass();
-        clazz.accessSpecifier.pub = clazz.accessSpecifier.fin = true;
-        clazz.name = "WindowMessages";
-        clazz.pkg = "win32.mapped";
-        fields.forEach(clazz::addField);
-        clazz.addConstructor(new CConstructor());
-        Files.writeString(Path.of("./src/main/java/win32/mapped/WindowMessages.java"), clazz.toString());
+        System.out.println("Discovering integer constants...");
+        var constants = ConstMapper.extractAllConstants("win32.mapped", "Constants", files);
+        System.out.println("Discovered " + constants.fields.size() + " constants!");
+        Files.writeString(Path.of("./src/main/java/win32/mapped/Constants.java"), constants.toString());
 
     }
 }
