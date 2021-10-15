@@ -1,4 +1,4 @@
-package com.falsepattern.jwin32.conversion.common;
+package com.falsepattern.jwin32.internal.conversion.common;
 
 public record CParameter(CType type, String name) {
     @Override

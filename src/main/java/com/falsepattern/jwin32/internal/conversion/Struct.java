@@ -1,6 +1,6 @@
-package com.falsepattern.jwin32.conversion;
+package com.falsepattern.jwin32.internal.conversion;
 
-import com.falsepattern.jwin32.conversion.common.*;
+import com.falsepattern.jwin32.internal.conversion.common.*;
 import jdk.incubator.foreign.GroupLayout;
 import jdk.incubator.foreign.MemoryLayout;
 import jdk.incubator.foreign.ValueLayout;

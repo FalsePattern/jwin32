@@ -40,7 +40,7 @@
                         <argument>-Dforeign.restricted=permit</argument>
                         <argument>--enable-native-access=ALL-UNNAMED</argument>
                         <argument>--add-modules</argument><argument>jdk.incubator.foreign</argument>
-                        <mainClass>com.falsepattern.jwin32.conversion.Translator</mainClass>
+                        <mainClass>com.falsepattern.jwin32.internal.conversion.Translator</mainClass>
                     </arguments>
                 </configuration>
             </plugin>

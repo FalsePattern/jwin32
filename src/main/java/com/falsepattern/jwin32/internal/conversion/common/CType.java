@@ -1,4 +1,4 @@
-package com.falsepattern.jwin32.conversion.common;
+package com.falsepattern.jwin32.internal.conversion.common;
 
 import jdk.incubator.foreign.*;
 import win32.pure.Win32;

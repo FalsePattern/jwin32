@@ -1,4 +1,4 @@
-package com.falsepattern.jwin32.conversion.common;
+package com.falsepattern.jwin32.internal.conversion.common;
 
 public class CField {
     public final AccessSpecifier accessSpecifier = new AccessSpecifier();
