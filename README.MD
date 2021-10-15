@@ -4,7 +4,7 @@ A Project Panama-based mapping + wrapper generator for win32 headers.
 ### If you only want to use the prebuilt jars in your project, you still MUST read entries 1, 2, 6, and 7!
 You can't use this library without some manual configuration!
 
-Note: You can skip installing the windows SDK, it's only used when generating the pure mappings.
+Note: You can skip installing the Windows SDK, it's only used when generating the pure mappings.
 
 ## Table of Contents
 0. [Disclaimer](#0-disclaimer)
@@ -26,7 +26,7 @@ MSVC, Windows.h, d3d11.h and the Windows SDK are owned by Microsoft, and due to 
 The project source code does not include generated and mapped files because there's a lot of files (more than 10k after every class is generated)
 
 ## 1. What is Project Panama
-Java's project panama is an incubating feature of java, only accessible on a specific branch, is a brand new solution that gets rid of writing JNI or JNA wrappers for native libraries, and instead almost completely automates the process, or hides it behind neat and efficient wrapper classes.
+Java's project panama is an incubating feature of java, only accessible on a specific branch, is a brand-new solution that gets rid of writing JNI or JNA wrappers for native libraries, and instead almost completely automates the process, or hides it behind neat and efficient wrapper classes.
 * Project Panama: https://openjdk.java.net/projects/panama/
 * Project Panama Builds: https://jdk.java.net/panama/
 
@@ -101,7 +101,7 @@ If the output is different, there may be 3 reasons:
 2. You installed the Windows SDK incorrectly. In this case it will say either that `'Windows.h' file not found`, or `'d3d11.h' file not found`.
    Solution: Go through the [dependencies](#2-dependencies) again and make sure you verify that the Windows SDK is installed correctly. As a last resort, you can install Visual Studio 2019.
 3. Something else:
-   What is most likely in this case is that either a new Windows SDK or Project Panama version has released. Please check the open issues, and if there's no issue with your specific script output, please open a issue if the specific output hasn't been reported yet.
+   What is most likely in this case is that either a new Windows SDK or Project Panama version has released. Please check the open issues, and if there's no issue with your specific script output, please open an issue if the specific output hasn't been reported yet.
 
 ## 4. Generating wrappers and jar
 After the panama mappings have been generated, the next step is generating the wrappers and the jar file.
