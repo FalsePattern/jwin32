@@ -166,6 +166,9 @@ While scouting the web for COM implementations in java, i stumbled upon an artic
 So it seems like this project brings Java and Microsoft back together, a bit like how it was 20 years ago.
 
 ## 10. Changelog
+### [0.3.1] - 2021-10-15
+####Changed
+* Now generates less whitespace into wrapper classes
 ### [0.3.0] - 2021-10-15
 ####Added
 * Extraction of constants (WM_..., CS_..., etc.)
