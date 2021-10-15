@@ -1,8 +1,8 @@
-package com.falsepattern.jwin32.conversion;
+package com.falsepattern.jwin32.internal.conversion;
 
-import com.falsepattern.jwin32.conversion.common.CClass;
-import com.falsepattern.jwin32.conversion.common.CField;
-import com.falsepattern.jwin32.conversion.common.CType;
+import com.falsepattern.jwin32.internal.conversion.common.CClass;
+import com.falsepattern.jwin32.internal.conversion.common.CField;
+import com.falsepattern.jwin32.internal.conversion.common.CType;
 
 import java.io.File;
 import java.io.IOException;

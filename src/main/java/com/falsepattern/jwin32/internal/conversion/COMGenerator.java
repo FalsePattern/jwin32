@@ -1,16 +1,14 @@
-package com.falsepattern.jwin32.conversion;
+package com.falsepattern.jwin32.internal.conversion;
 
-import com.falsepattern.jwin32.conversion.common.*;
+import com.falsepattern.jwin32.internal.conversion.common.*;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
-import static com.falsepattern.jwin32.conversion.common.CType.*;
-
 public class COMGenerator {
 
-    private static final CParameter MEMORY_ADDRESS_PARAM = new CParameter(MEMORY_ADDRESS, "address" +
-                                                                                          "");
+    private static final CParameter MEMORY_ADDRESS_PARAM = new CParameter(CType.MEMORY_ADDRESS, "address" +
+                                                                                                "");
 
 
     private static final CField SCOPE = new CField();
@@ -19,14 +17,14 @@ public class COMGenerator {
     static {
         SCOPE.accessSpecifier.fin = OBJ.accessSpecifier.fin = VTBL.accessSpecifier.fin = true;
         OBJ.accessSpecifier.pub = true;
-        SCOPE.type = RESOURCE_SCOPE;
+        SCOPE.type = CType.RESOURCE_SCOPE;
         SCOPE.name = "scope";
         SCOPE.initializer.append("ResourceScope.newImplicitScope()");
 
-        OBJ.type = MEMORY_ADDRESS;
+        OBJ.type = CType.MEMORY_ADDRESS;
         OBJ.name = "obj";
 
-        VTBL.type = MEMORY_SEGMENT;
+        VTBL.type = CType.MEMORY_SEGMENT;
         VTBL.name = "vtbl";
     }
 
@@ -37,7 +35,7 @@ public class COMGenerator {
         com.accessSpecifier.pub = true;
         com.importImplicitly(new CType(baseClass));
         com.importImplicitly(new CType(vtbl));
-        com.importImplicitly(WIN32);
+        com.importImplicitly(CType.WIN32);
         com.addField(SCOPE);
         com.addField(OBJ);
         com.addField(VTBL);
@@ -61,9 +59,9 @@ public class COMGenerator {
         var method = new CMethod();
         method.accessSpecifier.pub = true;
         method.accessSpecifier.stat = true;
-        method.returnType = MEMORY_SEGMENT;
+        method.returnType = CType.MEMORY_SEGMENT;
         method.name = "REFIID";
-        method.code.append("return ").append(WIN32.simpleName()).append(".");
+        method.code.append("return ").append(CType.WIN32.simpleName()).append(".");
         if (baseClass.getSimpleName().equals("XMLDOMDocumentEvents")) {
             method.code.append("D");
         }
@@ -111,7 +109,7 @@ public class COMGenerator {
         wrapper.name = methodInterface.getSimpleName();
         wrapper.returnType = new CType(interfaceMethod.getReturnType());
         var callParamList = new CParamList();
-        callParamList.add(new CParameter(MEMORY_ADDRESS, "obj"));
+        callParamList.add(new CParameter(CType.MEMORY_ADDRESS, "obj"));
         var params = Arrays.asList(interfaceMethod.getParameters());
         params = params.subList(1, params.size());
         params.forEach((param) -> {
