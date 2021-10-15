@@ -12,10 +12,10 @@ public class CClass {
     public final AccessSpecifier accessSpecifier = new AccessSpecifier();
     public String name;
     public CType superclass;
-    private final Set<CType> imports = new HashSet<>();
-    private final List<CField> fields = new ArrayList<>();
+    public final Set<CType> imports = new HashSet<>();
+    public final List<CField> fields = new ArrayList<>();
     public final List<CConstructor> constructors = new ArrayList<>();
-    private final List<CMethod> methods = new ArrayList<>();
+    public final List<CMethod> methods = new ArrayList<>();
 
     public void importImplicitly(CType type) {
         imports.add(type);
