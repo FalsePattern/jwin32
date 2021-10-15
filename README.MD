@@ -152,8 +152,7 @@ Over the course of the next few months I will continue polishing the generator c
 Goals:
 - [x] Create wrapper code for structs inside structs
 - [ ] Create wrapper code for arrays inside structs
-- [ ] Create wrapper classes for common defines
-  - [x] WM_*
+- [x] Create wrapper classes for constant defines
 
 ## 9. Inspiration
 I originally came up with this idea after having a small spike of interest in direct3D, but found C++ programming to not be my cup of tea.
@@ -167,6 +166,12 @@ While scouting the web for COM implementations in java, i stumbled upon an artic
 So it seems like this project brings Java and Microsoft back together, a bit like how it was 20 years ago.
 
 ## 10. Changelog
+### [0.3.0] - 2021-10-15
+####Added
+* Extraction of constants (WM_..., CS_..., etc.)
+  * They were already available through the pure mappings, however, they were hidden behind getter functions, and thus, you couldn't use them in switch statements. Now you can. 
+  * There's about 27k of them, extracted to `win32.mapped.Constants`
+  
 ### [0.2.0] - 2021-10-14
 ####Added
 * Automatic fixing for known issues in:
