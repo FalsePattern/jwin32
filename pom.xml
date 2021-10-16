@@ -29,6 +29,14 @@
                 </configuration>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.2.0</version>
+                <configuration>
+                    <encoding>${project.encoding}</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>3.0.0</version>
@@ -62,6 +70,17 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>3.3.0</version>
+                <configuration>
+                    <encoding>${project.encoding}</encoding>
+                    <additionalJOptions>
+                        <additionalJOption>-J-Xms8G</additionalJOption>
+                        <additionalJOption>-J-Xmx8G</additionalJOption>
+                        <additionalJOption>-J-Dforeign.restricted=permit</additionalJOption>
+                        <additionalJOption>-J--enable-native-access=ALL-UNNAMED</additionalJOption>
+                        <additionalJOption>-J--add-modules</additionalJOption><additionalJOption>-Jjdk.incubator.foreign</additionalJOption>
+                        <additionalJOption>--add-modules</additionalJOption><additionalJOption>jdk.incubator.foreign</additionalJOption>
+                    </additionalJOptions>
+                </configuration>
                 <executions>
                     <execution>
                         <id>attach-javadoc</id>
@@ -71,14 +90,6 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>3.2.0</version>
-                <configuration>
-                    <encoding>${project.encoding}</encoding>
-                </configuration>
             </plugin>
         </plugins>
     </build>
