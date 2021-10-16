@@ -12,11 +12,11 @@ Note: You can skip installing the Windows SDK, it's only used when generating th
 2. [Dependencies](#2-dependencies)
 3. [Generating panama mappings](#3-generating-panama-mappings)
 4. [Generating wrappers and jar](#4-generating-wrappers-and-jar)
-6. [Running code with panama](#5-running-code-with-panama)
-7. [Linking libraries](#6-linking-libraries)
-8. [What next?](#7-what-next)
-9. [Inspiration](#8-inspiration)
-10. [Changelog](#9-changelog)
+5. [Running code with panama](#5-running-code-with-panama)
+6. [Linking libraries](#6-linking-libraries)
+7. [What next?](#7-what-next)
+8. [Inspiration](#8-inspiration)
+9. [Changelog](#9-changelog)
 
 ## 0. Disclaimer
 This project is not endorsed by nor affiliated with either Microsoft, Oracle, nor the OpenJDK project.
@@ -163,6 +163,13 @@ While scouting the web for COM implementations in java, i stumbled upon an artic
 So it seems like this project brings Java and Microsoft back together, a bit like how it was 20 years ago.
 
 ## 9. Changelog
+### [0.4.1] - 2021-10-16
+#### Added
+* Javadoc to the memory manipulation classes
+#### Changed
+* Fixed some broken logic in `MemoryUtil`
+#### Removed
+* Testing code in `MemoryStack`
 ### [0.4.0] - 2021-10-15
 ####Added
 * Memory manipulation helper classes inside `com.falsepattern.jwin32.memory`
