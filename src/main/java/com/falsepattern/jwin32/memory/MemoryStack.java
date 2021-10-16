@@ -101,15 +101,10 @@ public class MemoryStack implements MemoryAllocator, AutoCloseable {
         pop();
     }
 
-    public void destroy() {
-        currentScope.close();
-        while (scopes.size() > 0) {
-            scopes.pop().close();
-        }
-        scope.close();
-    }
-
+    /**
+     * @return The currently active memory scope for functions that require one.
+     */
     public ResourceScope scope() {
-        return scope;
+        return currentScope;
     }
 }
