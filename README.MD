@@ -1,7 +1,7 @@
 # JWin32
 A Project Panama-based mapping + wrapper generator for win32 headers.
 ## IMPORTANT
-### If you only want to use the prebuilt jars in your project, you still MUST read entries 1, 2, 6, and 7!
+### If you only want to use the prebuilt jars in your project, you still MUST read entries 1, 2, 5, and 6!
 You can't use this library without some manual configuration!
 
 Note: You can skip installing the Windows SDK, it's only used when generating the pure mappings.
