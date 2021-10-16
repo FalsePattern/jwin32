@@ -164,28 +164,28 @@ So it seems like this project brings Java and Microsoft back together, a bit lik
 
 ## 9. Changelog
 ### [0.4.0] - 2021-10-15
-####Added
+#### Added
 * Memory manipulation helper classes inside `com.falsepattern.jwin32.memory`
-####Changed
+#### Changed
 * Moved code generation stuff into "internal" class to signal to developers to not use those
 * Reworked COM wrappers to use MemoryAddress instead of MemorySegment in the constructor argument, saving some client-side conversion
 ### [0.3.1] - 2021-10-15
-####Changed
+#### Changed
 * Now generates less whitespace into wrapper classes
 ### [0.3.0] - 2021-10-15
-####Added
+#### Added
 * Extraction of constants (WM_..., CS_..., etc.)
   * They were already available through the pure mappings, however, they were hidden behind getter functions, and thus, you couldn't use them in switch statements. Now you can. 
   * There's about 27k of them, extracted to `win32.mapped.Constants`
   
 ### [0.2.0] - 2021-10-14
-####Added
+#### Added
 * Automatic fixing for known issues in:
   * ID3DInclude
   * XMLDOMDocumentEvents
-####Changed
+#### Changed
 * Reimplemented struct generator. Nested structs are now supported.
-####Removed
+#### Removed
 * The following win32 structs will not have wrappers generated, due to alignment incompatibility:
   * _MMIOINFO
   * DRVCONFIGINFOEX
