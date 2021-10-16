@@ -5,6 +5,9 @@ import jdk.incubator.foreign.ResourceScope;
 
 import java.util.Stack;
 
+/**
+ * A thread local allocated memory segment, which is useful for allocating short-lived native memory, such as configuration structs.
+ */
 public class MemoryStack implements MemoryAllocator, AutoCloseable {
     private static final long MAX_ALIGNMENT = 0x1000;
 
@@ -49,10 +52,18 @@ public class MemoryStack implements MemoryAllocator, AutoCloseable {
         return newSegment;
     }
 
+    /**
+     * Retrieves the thread local stack without pushing a new memory scope.
+     * @return The thread's stack
+     */
     public static MemoryStack getCurrentStack() {
         return threadLocalStack.get();
     }
 
+    /**
+     * Pushes a new memory scope, which then later must be {@link #pop()}-ed.
+     * @return This memory stack
+     */
     public MemoryStack push() {
         offsets.push(baseOffset);
         scopes.push(currentScope);
@@ -61,6 +72,9 @@ public class MemoryStack implements MemoryAllocator, AutoCloseable {
         return this;
     }
 
+    /**
+     * Pops the topmost memory scope, releasing all segments allocated in that scope.
+     */
     public void pop() {
         if (offsets.isEmpty()) throw new RuntimeException("Tried to pop empty memory stack!");
         currentOffset = baseOffset;
@@ -69,25 +83,28 @@ public class MemoryStack implements MemoryAllocator, AutoCloseable {
         baseOffset = offsets.pop();
     }
 
+    /**
+     * Retrieves the thread local stack, and then immediately pushes a new memory scope.
+     * Useful for try-with-resource blocks.
+     * @return The thread's memory stack
+     */
     public static MemoryStack stackPush() {
         var stack = threadLocalStack.get();
         return stack.push();
     }
 
+    /**
+     * Used for try-with-resources blocks, it's a wrapper function for {@link #pop()}.
+     */
     @Override
     public void close() {
         pop();
     }
 
-    public void destroy() {
-        currentScope.close();
-        while (scopes.size() > 0) {
-            scopes.pop().close();
-        }
-        scope.close();
-    }
-
+    /**
+     * @return The currently active memory scope for functions that require one.
+     */
     public ResourceScope scope() {
-        return scope;
+        return currentScope;
     }
 }
