@@ -179,7 +179,7 @@ public interface MemoryAllocator extends SegmentAllocator {
      */
     default MemorySegment referenceP(MemoryAddress pValue) {
         var ppValue = mallocPointer();
-        MemoryUtil.setPointer(ppValue, pValue.segmentOffset(MemorySegment.globalNativeSegment()));
+        MemoryUtil.setPointer(ppValue, pValue.address());
         return ppValue;
     }
 
