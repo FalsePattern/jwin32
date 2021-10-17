@@ -10,6 +10,8 @@ public record CType(String name, String simpleName, boolean primitive) {
     public static final CType SHORT = new CType(short.class);
     public static final CType INT = new CType(int.class);
     public static final CType LONG = new CType(long.class);
+    public static final CType FLOAT = new CType(float.class);
+    public static final CType DOUBLE = new CType(double.class);
     public static final CType MEMORY_SEGMENT = new CType(MemorySegment.class);
     public static final CType MEMORY_ADDRESS = new CType(MemoryAddress.class);
     public static final CType SEGMENT_ALLOCATOR = new CType(SegmentAllocator.class);

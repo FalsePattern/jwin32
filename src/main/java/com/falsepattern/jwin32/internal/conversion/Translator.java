@@ -151,7 +151,7 @@ public class Translator {
         });
 
 
-        System.out.println("Discovering integer constants...");
+        System.out.println("Discovering defined constants...");
         var constants = ConstMapper.extractAllConstants("win32.mapped", "Constants", files);
         System.out.println("Discovered " + constants.fields.size() + " constants!");
         Files.writeString(Path.of("./src/main/java/win32/mapped/Constants.java"), constants.toString());
