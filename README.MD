@@ -163,6 +163,23 @@ While scouting the web for COM implementations in java, i stumbled upon an artic
 So it seems like this project brings Java and Microsoft back together, a bit like how it was 20 years ago.
 
 ## 9. Changelog
+### [0.4.2] - 2021-10-17
+#### Added
+* Additional Direct3D headers based on the [api docs](https://github.com/MicrosoftDocs/sdk-api/blob/docs/sdk-api-src/content/_direct3d11/index.md).
+  
+  Note: this does not include the C++ interoperability header, as jextract only translates C headers.
+  * d3d11_1.h
+  * d3d11_2.h
+  * d3d11_3.h
+  * d3d11_4.h
+  * d3d11sdklayers.h
+  * d3d11shader.h
+  * d3d11shadertracing.h
+  * d3dcommon.h
+  * d3dcsx.h
+* Constant extractor now extracts byte, short, int, long, float, and double constants. String constants are not extracted for now.
+#### Changed
+* Constant extractor now also removes the respective getter methods from Win32.java and its superclasses to fix some potential confusion.
 ### [0.4.1] - 2021-10-16
 #### Added
 * Javadoc to the memory manipulation classes
