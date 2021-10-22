@@ -71,6 +71,9 @@ download the Windows SDK:
 3. ### At this point I recommend a system restart to make sure that every program has the correct system variables available.
 
 ## 3. Generating panama mappings
+### TEMPORARY WORKAROUND IF JEXTRACT CRASHES:
+The results of this step are available in an approximately 8 MB zip file for each tagged release starting from 0.4.2 on the [Releases Page](https://github.com/FalsePattern/jwin32/releases)
+### ORIGINAL PROCEDURE:
 1. Run the `generate_win.bat` file. After it runs, the last line should say `Press any key to exit...`.
 
    Make sure the output of the script is EXACTLY the following:
