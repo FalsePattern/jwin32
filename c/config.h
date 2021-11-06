@@ -34,7 +34,7 @@
     #define NOMEMMGR
     #define NOMETAFILE
     #define NOMINMAX
-    #define NOMSG
+    //#define NOMSG
     #define NOOPENFILE
     #define NOSCROLL
     #define NOSERVICE
