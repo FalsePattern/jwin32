@@ -3,47 +3,52 @@
 //Windows.h
 //
 //The default defines have just enough functionality to allow for basic window management and input handling.
-#define WIN32_LEAN_AND_MEAN
-#define VC_EXTRALEAN //Probably don't need this one, but better safe than sorry
-#define NOGDICAPMASKS
-//#define NOVIRTUALKEYCODES
-//#define NOWINMESSAGES
-//#define NOWINSTYLES
-#define NOSYSMETRICS
-#define NOMENUS
-#define NOICONS
-//#define NOKEYSTATES
-#define NOSYSCOMMANDS
-#define NORASTEROPS
-#define NOSHOWWINDOW
-#define OEMRESOURCE
-#define NOATOM
-#define NOCLIPBOARD
-#define NOCOLOR
-#define NOCTLMGR
-#define NODRAEXT
-//#define NOGDI
-//#define NOKERNEL
-//#define NOUSER
-#define NONLS
-//#define NOMB
-#define NOMEMMGR
-#define NOMETAFILE
-#define NOMINMAX
-#define NOMSG
-#define NOOPENFILE
-#define NOSCROLL
-#define NOSERVICE
-#define NOSOUND
-#define NOTEXTMETRIC
-#define NOWH
-//#define NOWINOFFSETS
-#define NOCOMM
-#define NOKANJI
-#define NOHELP
-#define NOPROFILER
-#define NODEFERWINDOWPOS
-#define NOMCX
+//Comment out the following line to include the full Windows.h header (slows down compilation).
+#define JWIN32_REDUCE_WINDOWS_H
+
+#ifdef JWIN32_REDUCE_WINDOWS_H
+    #define WIN32_LEAN_AND_MEAN
+    #define VC_EXTRALEAN //Probably don't need this one, but better safe than sorry
+    #define NOGDICAPMASKS
+    //#define NOVIRTUALKEYCODES
+    //#define NOWINMESSAGES
+    //#define NOWINSTYLES
+    #define NOSYSMETRICS
+    #define NOMENUS
+    #define NOICONS
+    //#define NOKEYSTATES
+    #define NOSYSCOMMANDS
+    #define NORASTEROPS
+    #define NOSHOWWINDOW
+    #define OEMRESOURCE
+    #define NOATOM
+    #define NOCLIPBOARD
+    #define NOCOLOR
+    #define NOCTLMGR
+    #define NODRAEXT
+    //#define NOGDI
+    //#define NOKERNEL
+    //#define NOUSER
+    #define NONLS
+    //#define NOMB
+    #define NOMEMMGR
+    #define NOMETAFILE
+    #define NOMINMAX
+    #define NOMSG
+    #define NOOPENFILE
+    #define NOSCROLL
+    #define NOSERVICE
+    #define NOSOUND
+    #define NOTEXTMETRIC
+    #define NOWH
+    //#define NOWINOFFSETS
+    #define NOCOMM
+    #define NOKANJI
+    #define NOHELP
+    #define NOPROFILER
+    #define NODEFERWINDOWPOS
+    #define NOMCX
+#endif
 
 
 
