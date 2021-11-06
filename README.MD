@@ -63,7 +63,14 @@ Important reading before experimenting:
    4. Also enter `jextract -version`into the same command prompt. If the output starts with
       `WARNING: Using incubator modules: jdk.incubator.foreign, jdk.incubator.jextract`, panama is correctly
       installed.
-3. ### Windows SDK
+2. ### Maven (optional if your IDE doesn't have it, or you don't use and IDE)
+   Note: You only need this on your host system, not inside the VM.
+
+   1. Download and extract maven from this URL: https://maven.apache.org/download.cgi
+   2. Add the maven bin directory to your PATH: `<Directory where you extracted maven>\bin`
+   3. To verify that maven has been added to PATH properly, open a command prompt, and type `mvn -version`.
+   4. If the output starts with `Apache Maven`, maven is correctly installed.
+4. ### Windows SDK
    After you've installed project panama, you also need the header files that are then passed to jextract.
    If you're using the VM for the jextract step, you don't need the SDK on your host system, only on the VM.
 
