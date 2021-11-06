@@ -1,0 +1,13 @@
+WARNING: Using incubator modules: jdk.incubator.foreign, jdk.incubator.jextract
+WARNING: Layout size not available for Policies
+WARNING: Layout size not available for Elements
+WARNING: Layout size not available for pEventLogRecords
+WARNING: Layout size not available for ulOffsets
+WARNING: Layout size not available for Format
+WARNING: Layout size not available for Lev1Depends
+WARNING: Layout size not available for Lev2Depends
+WARNING: skipping wcstold because of unsupported type usage: long double
+WARNING: skipping _wcstold_l because of unsupported type usage: long double
+WARNING: skipping .x because of unsupported type usage: long double
+WARNING: skipping strtold because of unsupported type usage: long double
+WARNING: skipping _strtold_l because of unsupported type usage: long double
