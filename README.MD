@@ -86,7 +86,7 @@ when installing VS), you can skip this dependency.
    The following steps are the same for both:
    1. Select the `Desktop development with C++` workload
    2. Click install and wait until it finishes (Approximately 2 GB download size, 8 GB on disk. Less if visual studio
-   3. is already installed)
+      is already installed)
 
    ### At this point, restart your system to make sure that every program has the correct system variables available. (when running the VM, only restart the VM).
 
