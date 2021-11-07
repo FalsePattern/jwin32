@@ -16,7 +16,7 @@ public class COMGenerator {
     private static final CField VTBL = new CField();
     static {
         SCOPE.accessSpecifier.fin = OBJ.accessSpecifier.fin = VTBL.accessSpecifier.fin = true;
-        OBJ.accessSpecifier.pub = true;
+        OBJ.accessSpecifier.vis = AccessSpecifier.Visibility.PUBLIC;
         SCOPE.type = CType.RESOURCE_SCOPE;
         SCOPE.name = "scope";
         SCOPE.initializer.append("ResourceScope.newImplicitScope()");
@@ -32,7 +32,7 @@ public class COMGenerator {
         var com = new CClass();
         com.name = baseClass.getSimpleName() + "_J";
         com.pkg = pkg;
-        com.accessSpecifier.pub = true;
+        com.accessSpecifier.vis = AccessSpecifier.Visibility.PUBLIC;
         com.importImplicitly(new CType(baseClass));
         com.importImplicitly(new CType(vtbl));
         com.importImplicitly(CType.WIN32);
@@ -57,7 +57,7 @@ public class COMGenerator {
 
     private static CMethod getREFIIDMethod(Class<?> baseClass) {
         var method = new CMethod();
-        method.accessSpecifier.pub = true;
+        method.accessSpecifier.vis = AccessSpecifier.Visibility.PUBLIC;
         method.accessSpecifier.stat = true;
         method.returnType = CType.MEMORY_SEGMENT;
         method.name = "REFIID";
@@ -80,7 +80,7 @@ public class COMGenerator {
     private static CConstructor getConstructor(Class<?> baseClass, Class<?> vtbl, Method[] ifMethods) {
         var vtblName = vtbl.getSimpleName();
         var constructor = new CConstructor();
-        constructor.accessSpecifier.pub = true;
+        constructor.accessSpecifier.vis = AccessSpecifier.Visibility.PUBLIC;
         constructor.paramList.add(MEMORY_ADDRESS_PARAM);
         constructor.code
                 .append("var segment = ").append(baseClass.getSimpleName()).append(".ofAddress(address, scope);")
@@ -105,7 +105,7 @@ public class COMGenerator {
         if (optMethod.isEmpty()) return null;
         var interfaceMethod = optMethod.get();
         var wrapper = new CMethod();
-        wrapper.accessSpecifier.pub = true;
+        wrapper.accessSpecifier.vis = AccessSpecifier.Visibility.PUBLIC;
         wrapper.name = methodInterface.getSimpleName();
         wrapper.returnType = new CType(interfaceMethod.getReturnType());
         var callParamList = new CParamList();
