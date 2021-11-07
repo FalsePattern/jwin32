@@ -206,11 +206,12 @@ language called J++, and lawsuit between Sun Microsystems and Microsoft, which e
 .NET framework and the C# programming language.
 
 ## 9. Changelog
-### [0.5.0] - 2021-11-07
+### [0.5.0] - currently in development
 #### Added
 * String and pointer constant extraction
 * Internal code encapsulation using project jigsaw's module-info.java system
 * Bat files for the compile step
+* Static wrapper methods for MemoryUtil singleton's MemoryAllocator
 
 #### Changed
 * C headers are now modularized, and can be configured by the user before jextract-ing.
