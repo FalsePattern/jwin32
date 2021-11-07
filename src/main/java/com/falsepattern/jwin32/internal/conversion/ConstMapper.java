@@ -1,13 +1,21 @@
 package com.falsepattern.jwin32.internal.conversion;
 
+import com.falsepattern.jwin32.internal.conversion.common.AccessSpecifier;
 import com.falsepattern.jwin32.internal.conversion.common.CClass;
 import com.falsepattern.jwin32.internal.conversion.common.CField;
 import com.falsepattern.jwin32.internal.conversion.common.CType;
+import com.falsepattern.jwin32.memory.MemoryUtil;
+import jdk.incubator.foreign.CLinker;
+import jdk.incubator.foreign.MemoryAddress;
+import jdk.incubator.foreign.MemorySegment;
+import win32.pure.Win32;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
@@ -19,6 +27,8 @@ public class ConstMapper {
     private static final Pattern DEFINED_LONG = Pattern.compile(" {4}public static long (\\w+)\\(\\) \\{\\n {8}return (-?\\d+L);\\n {4}}\n");
     private static final Pattern DEFINED_FLOAT = Pattern.compile(" {4}public static float (\\w+)\\(\\) \\{\\n {8}return (-?\\d+\\.?\\d*E?\\d*f);\\n {4}}\n");
     private static final Pattern DEFINED_DOUBLE = Pattern.compile(" {4}public static double (\\w+)\\(\\) \\{\\n {8}return (-?\\d+\\.?\\d*E?\\d*d);\\n {4}}\n");
+    private static final Pattern DEFINED_STRING = Pattern.compile(" {4}public static MemorySegment (\\w+)\\(\\) \\{\\n {8}return constants\\$\\d+\\..*?;\\n {4}}\n");
+    private static final Pattern DEFINED_POINTER = Pattern.compile(" {4}public static MemoryAddress (\\w+)\\(\\) \\{\\n {8}return constants\\$\\d+\\..*?;\\n {4}}\n");
 
     private static final Map<CType, Pattern> patterns = new HashMap<>();
     static {
@@ -28,12 +38,19 @@ public class ConstMapper {
         patterns.put(CType.LONG, DEFINED_LONG);
         patterns.put(CType.FLOAT, DEFINED_FLOAT);
         patterns.put(CType.DOUBLE, DEFINED_DOUBLE);
+        patterns.put(CType.MEMORY_ADDRESS, DEFINED_POINTER);
+        patterns.put(CType.MEMORY_SEGMENT, DEFINED_STRING);
     }
-    public static CClass extractAllConstants(String pkg, String className, List<File> files) {
-        var clazz = new CClass();
-        clazz.accessSpecifier.pub = true;
-        clazz.pkg = pkg;
-        clazz.name = className;
+    public static CClass[] extractAllConstants(String pkg, List<File> files) {
+        var classes = new ArrayList<CClass>();
+        var ref = new Object() {
+            CClass clazz = new CClass();
+        };
+        ref.clazz.accessSpecifier.vis = AccessSpecifier.Visibility.PACKAGE;
+        ref.clazz.pkg = pkg;
+        ref.clazz.name = "Constants$0";
+        AtomicInteger id = new AtomicInteger();
+        AtomicInteger constantCount = new AtomicInteger();
         files.stream()
                 .filter((file) -> file.getName().matches("Win32(?:_\\d+)?.java"))
                 .flatMap((file) -> {
@@ -51,13 +68,32 @@ public class ConstMapper {
                         int lastEnd = 0;
                         while (matcher.find()) {
                             var field = new CField();
-                            field.accessSpecifier.pub = field.accessSpecifier.stat = field.accessSpecifier.fin = true;
-                            field.type = type;
+                            field.accessSpecifier.vis = AccessSpecifier.Visibility.PUBLIC;
+                            field.accessSpecifier.stat = field.accessSpecifier.fin = true;
                             field.name = matcher.group(1);
-                            field.initializer.append(matcher.group(2));
-                            fields.add(field);
-                            fileRemnant.append(contents[0], lastEnd, matcher.start());
-                            lastEnd = matcher.end();
+                            if (type.equals(CType.MEMORY_ADDRESS) || type.equals(CType.MEMORY_SEGMENT)) {
+                                field.type = type.equals(CType.MEMORY_ADDRESS) ? CType.LONG : CType.STRING;
+                                try {
+                                    var method = Win32.class.getMethod(field.name);
+                                    method.setAccessible(true);
+                                    var value = method.invoke(null);
+                                    if (type.equals(CType.MEMORY_ADDRESS)) {
+                                        var offset = ((MemoryAddress)value).segmentOffset(MemorySegment.globalNativeSegment());
+                                        field.initializer.append(offset).append('L');
+                                    } else {
+                                        var str = CLinker.toJavaString((MemorySegment) value);
+                                        field.initializer.append('"').append(escape(str)).append('"');
+                                    }
+                                } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            } else {
+                                field.type = type;
+                                field.initializer.append(matcher.group(2));
+                            }
+                                fields.add(field);
+                                fileRemnant.append(contents[0], lastEnd, matcher.start());
+                                lastEnd = matcher.end();
                         }
                         if (lastEnd != 0) {
                             fileRemnant.append(contents[0], lastEnd, contents[0].length());
@@ -72,30 +108,31 @@ public class ConstMapper {
                     return fields.stream();
                 })
                 .sorted(Comparator.comparing((field) -> field.name))
-                .forEach(clazz::addField);
-        return clazz;
-
+                .forEach((field) -> {
+                    ref.clazz.addField(field);
+                    if (constantCount.incrementAndGet() >= 4096) {
+                        classes.add(ref.clazz);
+                        var newClass = new CClass();
+                        newClass.name = "Constants$" + id.incrementAndGet();
+                        newClass.accessSpecifier.vis = AccessSpecifier.Visibility.PACKAGE;
+                        newClass.pkg = pkg;
+                        newClass.superclass = ref.clazz.asCType();
+                        ref.clazz = newClass;
+                        constantCount.set(0);
+                    }
+                });
+        ref.clazz.accessSpecifier.vis = AccessSpecifier.Visibility.PUBLIC;
+        ref.clazz.name = "Constants";
+        classes.add(ref.clazz);
+        return classes.toArray(CClass[]::new);
     }
-
-    public static CClass mapDefines(String pkg, String className, Predicate<CField> filter, CClass definesClass) {
-        var defType = definesClass.asCType();
-        var clazz = new CClass();
-        clazz.accessSpecifier.pub = clazz.accessSpecifier.fin = true;
-        clazz.name = className;
-        clazz.pkg = pkg;
-        clazz.importImplicitly(defType);
-        definesClass.fields.stream()
-                .filter(filter)
-                .map((field) -> {
-                    var mappedField = new CField();
-                    mappedField.accessSpecifier.pub = mappedField.accessSpecifier.stat = mappedField.accessSpecifier.fin = true;
-                    mappedField.name = field.name;
-                    mappedField.type = field.type;
-                    mappedField.initializer.append(defType.simpleName()).append(".").append(field.name);
-                    return mappedField;
-                })
-                .sorted(Comparator.comparing((field) -> field.name))
-                .forEach(clazz::addField);
-        return clazz;
+    private static String escape(String s){
+        return s.replace("\\", "\\\\")
+                .replace("\t", "\\t")
+                .replace("\b", "\\b")
+                .replace("\n", "\\n")
+                .replace("\r", "\\r")
+                .replace("\f", "\\f")
+                .replace("\"", "\\\"");
     }
 }

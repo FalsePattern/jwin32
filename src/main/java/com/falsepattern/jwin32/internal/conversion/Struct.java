@@ -3,6 +3,7 @@ package com.falsepattern.jwin32.internal.conversion;
 import com.falsepattern.jwin32.internal.conversion.common.*;
 import jdk.incubator.foreign.GroupLayout;
 import jdk.incubator.foreign.MemoryLayout;
+import jdk.incubator.foreign.SequenceLayout;
 import jdk.incubator.foreign.ValueLayout;
 
 import java.util.Arrays;
@@ -15,16 +16,16 @@ public class Struct {
     private static final CConstructor SUPER_CALL_ASSIGN = new CConstructor();
     private static final CConstructor SUPER_CALL_ALLOCATOR = new CConstructor();
     static {
-        SEGMENT_FIELD.accessSpecifier.pub = true;
+        SEGMENT_FIELD.accessSpecifier.vis = AccessSpecifier.Visibility.PUBLIC;
         SEGMENT_FIELD.accessSpecifier.fin = true;
         SEGMENT_FIELD.name = "segment";
         SEGMENT_FIELD.type = CType.MEMORY_SEGMENT;
 
-        SUPER_CALL_ALLOCATOR.accessSpecifier.pub = true;
+        SUPER_CALL_ALLOCATOR.accessSpecifier.vis = AccessSpecifier.Visibility.PUBLIC;
         SUPER_CALL_ALLOCATOR.paramList.add(new CParameter(CType.SEGMENT_ALLOCATOR, "allocator"));
         SUPER_CALL_ALLOCATOR.code.append("super(allocator);");
 
-        SUPER_CALL_ASSIGN.accessSpecifier.pub = true;
+        SUPER_CALL_ASSIGN.accessSpecifier.vis = AccessSpecifier.Visibility.PUBLIC;
         SUPER_CALL_ASSIGN.paramList.add(new CParameter(CType.MEMORY_SEGMENT, "segment"));
         SUPER_CALL_ASSIGN.code.append("super(segment);");
 
@@ -39,7 +40,7 @@ public class Struct {
         this.parent = parent;
         implementation.pkg = pkg;
         implementation.importImplicitly(new CType(parent));
-        implementation.accessSpecifier.pub = true;
+        implementation.accessSpecifier.vis = AccessSpecifier.Visibility.PUBLIC;
         implementation.name = parent.getSimpleName() + "_J";
         implementation.addField(SEGMENT_FIELD);
         implementation.addConstructor(genSetterConstructor());
@@ -51,7 +52,7 @@ public class Struct {
         this.parent = parent;
         var baseWrapper = new CType(pkg + "." + baseImpl.getSimpleName() + "_J", baseImpl.getSimpleName() + "_J", false);
         implementation.pkg = pkg;
-        implementation.accessSpecifier.pub = true;
+        implementation.accessSpecifier.vis = AccessSpecifier.Visibility.PUBLIC;
         implementation.name = parent.getSimpleName() + "_J";
         implementation.superclass = baseWrapper;
         implementation.addConstructor(SUPER_CALL_ASSIGN);
@@ -64,7 +65,7 @@ public class Struct {
 
     private static CConstructor genSetterConstructor() {
         var constructor = new CConstructor();
-        constructor.accessSpecifier.pub = true;
+        constructor.accessSpecifier.vis = AccessSpecifier.Visibility.PUBLIC;
         constructor.paramList.add(new CParameter(CType.MEMORY_SEGMENT, "segment"));
         constructor.code.append("this.segment = segment;");
         return constructor;
@@ -72,7 +73,7 @@ public class Struct {
 
     private static CConstructor genAllocatorConstructor(Class<?> parent) {
         var constructor = new CConstructor();
-        constructor.accessSpecifier.pub = true;
+        constructor.accessSpecifier.vis = AccessSpecifier.Visibility.PUBLIC;
         constructor.paramList.add(new CParameter(CType.SEGMENT_ALLOCATOR, "allocator"));
         constructor.code.append("this(").append(parent.getSimpleName()).append(".allocate(allocator));");
         return constructor;
@@ -95,7 +96,7 @@ public class Struct {
                     var name = value.name().get();
                     var getter = new CMethod();
                     var setter = new CMethod();
-                    getter.accessSpecifier.pub = setter.accessSpecifier.pub = true;
+                    getter.accessSpecifier.vis = setter.accessSpecifier.vis = AccessSpecifier.Visibility.PUBLIC;
                     getter.name = setter.name = name;
                     var oGetter = Arrays.stream(parent.getMethods()).filter((method) -> method.getParameterCount() == 1 && method.getName().equals(name + "$get")).findFirst();
                     if (oGetter.isEmpty()) {
@@ -147,13 +148,10 @@ public class Struct {
 
         var field = new CField();
         implementation.constructors.get(0).code.append("\n").append(name).append(" = new ").append(cType.simpleName()).append("(").append(parent.getSimpleName()).append(".").append(name).append("$slice(segment));");
-        field.accessSpecifier.pub = field.accessSpecifier.fin = true;
+        field.accessSpecifier.vis = AccessSpecifier.Visibility.PUBLIC;
+        field.accessSpecifier.fin = true;
         field.name = name;
         field.type = cType;
         implementation.addField(field);
-    }
-
-    public void implementSequenceLayoutGetterSetter(List<Struct> allStructs) {
-        //TODO
     }
 }

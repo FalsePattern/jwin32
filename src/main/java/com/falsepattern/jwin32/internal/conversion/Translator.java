@@ -14,34 +14,16 @@ import java.util.function.Predicate;
 
 public class Translator {
 
-    @SuppressWarnings("SpellCheckingInspection")
-    private static final String[] BANNED_CLASSES = new String[]{
-            "_MMIOINFO",
-            "DRVCONFIGINFOEX",
-            "IMAGE_AUX_SYMBOL_TOKEN_DEF",
-            "tagDRVCONFIGINFO",
-            "midihdr_tag",
-            "tagMCI_ANIM_OPEN_PARMSA",
-            "tagMCI_ANIM_OPEN_PARMSW",
-            "tagMCI_ANIM_WINDOW_PARMSA",
-            "tagMCI_ANIM_WINDOW_PARMSW",
-            "tagMCI_BREAK_PARMS",
-            "tagMCI_OPEN_PARMSA",
-            "tagMCI_OPEN_PARMSW",
-            "tagMCI_OVLY_OPEN_PARMSA",
-            "tagMCI_OVLY_OPEN_PARMSW",
-            "tagMCI_OVLY_WINDOW_PARMSA",
-            "tagMCI_OVLY_WINDOW_PARMSW",
-            "tagMCI_WAVE_OPEN_PARMSA",
-            "tagMCI_WAVE_OPEN_PARMSW",
-            "tagMETAHEADER",
-            "tagMIXERLINEA",
-            "tagMIXERLINECONTROLSA",
-            "tagMIXERLINECONTROLSW",
-            "tagMIXERLINEW",
-            "tagBITMAPFILEHEADER",
-            "tMIXERCONTROLDETAILS"
-    };
+    private static final String[] BANNED_CLASSES;
+
+    static {
+        try {
+            BANNED_CLASSES = Files.readAllLines(Path.of("./banned_structs")).toArray(String[]::new);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static void main(String[] args) throws IOException {
         var files = Arrays.asList(Objects.requireNonNull(new File("./src/main/java/win32/pure").listFiles()));
         var comObjects = new ArrayList<CClass>();
@@ -149,12 +131,13 @@ public class Translator {
                 e.printStackTrace();
             }
         });
-
-
-        System.out.println("Discovering defined constants...");
-        var constants = ConstMapper.extractAllConstants("win32.mapped", "Constants", files);
-        System.out.println("Discovered " + constants.fields.size() + " constants!");
-        Files.writeString(Path.of("./src/main/java/win32/mapped/Constants.java"), constants.toString());
-
+        {
+            System.out.println("Processing constants...");
+            var constants = ConstMapper.extractAllConstants("win32.mapped.constants", files);
+            for (var c: constants) {
+                Files.writeString(Path.of("./src/main/java/win32/mapped/constants/" + c.name + ".java"), c.toString());
+            }
+        }
+        System.out.println("Transformations complete!");
     }
 }

@@ -5,6 +5,7 @@ mkdir .\src\main\java\win32\pure
 mkdir .\src\main\java\win32\mapped
 mkdir .\src\main\java\win32\mapped\com
 mkdir .\src\main\java\win32\mapped\struct
+mkdir .\src\main\java\win32\mapped\constants
 
 REM Edit this line if you want to make custom mappings:
 jextract --source --header-class-name Win32 -d .\src\main\java -t win32.pure .\c\native.h

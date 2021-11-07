@@ -39,9 +39,10 @@ public class CClass {
     public void superConstructors(CClass other) {
 
         constructors.forEach((constructor) -> {
-            if (!constructor.accessSpecifier.pub) return;
+            if (constructor.accessSpecifier.vis.equals(AccessSpecifier.Visibility.PRIVATE)) return;
+            if (constructor.accessSpecifier.vis.equals(AccessSpecifier.Visibility.PACKAGE) && !other.pkg.equals(pkg)) return;
             var newConstructor = new CConstructor();
-            newConstructor.accessSpecifier.pub = true;
+            newConstructor.accessSpecifier.vis = constructor.accessSpecifier.vis;
             newConstructor.paramList.parameters.addAll(constructor.paramList.parameters);
             newConstructor.code.append("super(").append(constructor.paramList.asFunctionCallParams()).append(");");
             other.addConstructor(newConstructor);

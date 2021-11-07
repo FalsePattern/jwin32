@@ -204,10 +204,15 @@ language called J++, and lawsuit between Sun Microsystems and Microsoft, which e
 .NET framework and the C# programming language.
 
 ## 9. Changelog
-### [0.5.0] - 2021-11-06
+### [0.5.0] - 2021-11-07
+#### Added
+* String and pointer constant extraction
+* Internal code encapsulation using project jigsaw's module-info.java system
+
 #### Changed
 * C headers are now modularized, and can be configured by the user before jextract-ing.
 * Reworked guide to make the jextract step reproducible in a vm.
+* Moved banned classes list to external file for better editing.
 ### [0.4.2] - 2021-10-17
 #### Added
 * Additional Direct3D headers based on the [api docs](https://github.com/MicrosoftDocs/sdk-api/blob/docs/sdk-api-src/content/_direct3d11/index.md).
