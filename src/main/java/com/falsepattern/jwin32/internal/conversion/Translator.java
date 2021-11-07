@@ -139,5 +139,16 @@ public class Translator {
             }
         }
         System.out.println("Transformations complete!");
+        System.out.println("Generating module info...");
+        Files.writeString(Path.of("./src/main/java/module-info.java"), """
+                module jwin32_ {
+                    requires transitive jdk.incubator.foreign;
+                    exports com.falsepattern.jwin32.memory;
+                """ + (comObjects.size() > 0 ? "    exports win32.mapped.com;" : "") + """
+                    exports win32.mapped.constants;
+                    exports win32.mapped.struct;
+                    exports win32.pure;
+                }""");
+        System.out.println("Module info generated!");
     }
 }
