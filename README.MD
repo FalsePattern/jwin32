@@ -104,7 +104,7 @@ Currently, you can select the following:
 * Windows.h configurations using `#define NO...` defines.
 * Direct3D version. You can choose any combination of directx 9, 10, 11, or 12. You can also choose none of them.
 
-1. Run the `generate_win.bat` file. After it runs, the last line should say `Press any key to exit...`.
+Run the `generate.bat` file.
 
    You can ignore errors that match one of these examples:
    * `WARNING: Using incubator modules: jdk.incubator.jextract, jdk.incubator.foreign`
@@ -131,13 +131,15 @@ These wrapper classes simplify interaction with structs and COM objects, and als
 into `public static final` variables, which can then be used in switch statements
 (`jextract` puts `#define`s into getter methods, which cannot be used with switch statements).
 
-To do this, simply run `mvn clean compile exec:exec compile package` and wait until it finishes.
-(There are two compile steps, because the `exec:exec` step generates additional source files)
+To do this, simply run one of the `build_` batch files and wait until it finishes.
+
+The `build_install.bat` script installs the compiled jar files into the local maven repository.
+The `build_package.bat` script outputs the compiled jar file into the `target` directory.
 
 Wrapper classes are just the original struct/COM interface name with a `_J` suffix.
 
 Wrapper code is placed in the `win32.mapped` package, more precisely, structs get put in `win32.mapped.struct`,
-COM interfaces in `win32.mapped.com`, and `#define`d constants in the `win32.mapped.Constants` class.
+COM interfaces in `win32.mapped.com`, and `#define`d constants in the `win32.mapped.constants.Constants` class.
 
 ## 5. Running code with panama
 By default, foreign (native) access, even in Project Panama, is blocked. To solve this, you have to provide the
@@ -208,11 +210,14 @@ language called J++, and lawsuit between Sun Microsystems and Microsoft, which e
 #### Added
 * String and pointer constant extraction
 * Internal code encapsulation using project jigsaw's module-info.java system
+* Bat files for the compile step
 
 #### Changed
 * C headers are now modularized, and can be configured by the user before jextract-ing.
 * Reworked guide to make the jextract step reproducible in a vm.
 * Moved banned classes list to external file for better editing.
+* Separated the cleanup script from the generator.
+
 ### [0.4.2] - 2021-10-17
 #### Added
 * Additional Direct3D headers based on the [api docs](https://github.com/MicrosoftDocs/sdk-api/blob/docs/sdk-api-src/content/_direct3d11/index.md).
