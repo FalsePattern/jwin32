@@ -19,8 +19,8 @@ REM LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM
 REM OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 REM SOFTWARE.
 echo Cleaning up folders...
-rmdir /S /Q .\src\main\java\win32
-del .\src\main\java\module-info.java
+rmdir /S /Q .\src\main\java\win32 > nul
+del .\src\main\java\module-info.java > nul
 echo Creating empty folders...
 mkdir .\src\main\java\win32
 mkdir .\src\main\java\win32\pure
