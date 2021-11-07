@@ -1,3 +1,4 @@
+@echo off
 REM Copyright (c) 2021 FalsePattern
 REM
 REM Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -17,7 +18,6 @@ REM AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 REM LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 REM OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 REM SOFTWARE.
-@echo off
 call .\cleanup.bat
 echo Generating panama mappings...
 REM Edit this line if you want to make custom mappings:
