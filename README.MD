@@ -212,6 +212,7 @@ language called J++, and lawsuit between Sun Microsystems and Microsoft, which e
 * Internal code encapsulation using project jigsaw's module-info.java system
 * Bat files for the compile step
 * Static wrapper methods for MemoryUtil singleton's MemoryAllocator
+* Copyright notices to all source files and build scripts
 
 #### Changed
 * C headers are now modularized, and can be configured by the user before jextract-ing.
