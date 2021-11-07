@@ -220,6 +220,9 @@ language called J++, and lawsuit between Sun Microsystems and Microsoft, which e
 * Moved banned classes list to external file for better editing.
 * Separated the cleanup script from the generator.
 
+#### Removed
+* Maven distribution management
+
 ### [0.4.2] - 2021-10-17
 #### Added
 * Additional Direct3D headers based on the [api docs](https://github.com/MicrosoftDocs/sdk-api/blob/docs/sdk-api-src/content/_direct3d11/index.md).
