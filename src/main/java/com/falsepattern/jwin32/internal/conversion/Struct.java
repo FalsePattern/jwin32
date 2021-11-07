@@ -3,7 +3,6 @@ package com.falsepattern.jwin32.internal.conversion;
 import com.falsepattern.jwin32.internal.conversion.common.*;
 import jdk.incubator.foreign.GroupLayout;
 import jdk.incubator.foreign.MemoryLayout;
-import jdk.incubator.foreign.SequenceLayout;
 import jdk.incubator.foreign.ValueLayout;
 
 import java.util.Arrays;

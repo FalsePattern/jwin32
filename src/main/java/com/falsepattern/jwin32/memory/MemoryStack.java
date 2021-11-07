@@ -12,6 +12,7 @@ public class MemoryStack implements MemoryAllocator, AutoCloseable {
     private static final long MAX_ALIGNMENT = 0x1000;
 
     private final MemorySegment rootSegment;
+    @SuppressWarnings("FieldCanBeLocal")
     private final ResourceScope scope;
     private final Stack<Long> offsets = new Stack<>();
     private final Stack<ResourceScope> scopes = new Stack<>();
@@ -22,7 +23,7 @@ public class MemoryStack implements MemoryAllocator, AutoCloseable {
 
     private static final ThreadLocal<MemoryStack> threadLocalStack = ThreadLocal.withInitial(() -> {
         var scope = ResourceScope.newImplicitScope();
-        //4MB thread local stack
+        //4 MB thread local stack
         var segment = MemorySegment.allocateNative(4 * 1024 * 1024, MAX_ALIGNMENT, scope);
         return new MemoryStack(segment, scope);
     });

@@ -39,7 +39,7 @@ Important reading before experimenting:
 ## 2. Dependencies
 0. ### (Optional) Installing the Windows developer VM.
    There's a possibility of jextract failing due to a nonstandard system setup. In this case, you need to do the
-   jextract phase inside the Windows 10 developer VM, or if you don't want to install the windows sdk on your host OS.
+   jextract phase inside the Windows 10 developer VM, or if you don't want to install the Windows sdk on your host OS.
    You still need the panama jdk on your host to run the rest of the steps.
    1. You need either VMWare, Hyper-V, VirtualBox, or Parallels. If you haven't installed one of those yet, VirtualBox
       is the recommended option, as it was the only one tested with this project: https://www.virtualbox.org/wiki/Downloads

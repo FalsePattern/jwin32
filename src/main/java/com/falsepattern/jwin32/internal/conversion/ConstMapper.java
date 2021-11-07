@@ -4,7 +4,6 @@ import com.falsepattern.jwin32.internal.conversion.common.AccessSpecifier;
 import com.falsepattern.jwin32.internal.conversion.common.CClass;
 import com.falsepattern.jwin32.internal.conversion.common.CField;
 import com.falsepattern.jwin32.internal.conversion.common.CType;
-import com.falsepattern.jwin32.memory.MemoryUtil;
 import jdk.incubator.foreign.CLinker;
 import jdk.incubator.foreign.MemoryAddress;
 import jdk.incubator.foreign.MemorySegment;
@@ -16,7 +15,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
