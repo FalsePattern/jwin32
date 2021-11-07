@@ -7,7 +7,7 @@ public class CMethod implements TypeCarrier {
     public final AccessSpecifier accessSpecifier = new AccessSpecifier();
     public CType returnType = CType.VOID;
     public String name;
-    public CParamList paramList = new CParamList();
+    public final CParamList paramList = new CParamList();
     public final StringBuilder code = new StringBuilder();
 
     @Override
