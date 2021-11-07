@@ -200,7 +200,7 @@ public interface MemoryAllocator extends SegmentAllocator {
      */
     default MemorySegment referenceP(MemoryAddress pValue) {
         var ppValue = mallocPointer();
-        MemoryUtil.SetPointer(ppValue, pValue.address());
+        MemoryUtil.SetPointer(ppValue, pValue);
         return ppValue;
     }
 
