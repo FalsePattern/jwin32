@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="US-ASCII"?>
 <!--
 Copyright (c) 2021 FalsePattern
 
@@ -32,7 +32,7 @@ SOFTWARE.
 
     <properties>
         <java.version>17</java.version>
-        <project.encoding>UTF-8</project.encoding>
+        <project.encoding>US-ASCII</project.encoding>
     </properties>
     <build>
         <plugins>
