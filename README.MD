@@ -222,6 +222,7 @@ language called J++, and lawsuit between Sun Microsystems and Microsoft, which e
 
 #### Removed
 * Maven distribution management
+* Security vulnerability caused by unicode file encoding. ASCII is now the default.
 
 ### [0.4.2] - 2021-10-17
 #### Added
