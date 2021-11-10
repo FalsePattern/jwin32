@@ -1,8 +1,13 @@
 # JWin32
 A Project Panama-based mapping + wrapper generator for win32 headers.
 ## IMPORTANT
-### As of 0.5.0, no prebuilt jars will be provided. You must generate the mappings yourself.
-This is due to the new modular header system, which makes it impractical to include prebuilt jars for every combination.
+* ### As of 0.5.0, no prebuilt jars will be provided. You must generate the mappings yourself.
+  This is due to the new modular header system, which makes it impractical to include prebuilt jars for every combination.
+
+
+* Now accepting pull requests for implementing function macros. Jextract cannot extract these, so it requires manual
+  labor. See the [Macros file](https://github.com/FalsePattern/jwin32/blob/master/src/main/java/com/falsepattern/jwin32/Macros.java)
+  for examples.
 
 ## Table of Contents
 0. [Disclaimer](#0-disclaimer)
