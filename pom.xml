@@ -102,6 +102,7 @@ SOFTWARE.
                         <additionalJOption>-J--add-modules</additionalJOption><additionalJOption>-Jjdk.incubator.foreign</additionalJOption>
                         <additionalJOption>--add-modules</additionalJOption><additionalJOption>jdk.incubator.foreign</additionalJOption>
                     </additionalJOptions>
+                    <excludePackageNames>win32.pure:win32.mapped:win32.mapped.*</excludePackageNames>
                 </configuration>
                 <executions>
                     <execution>
