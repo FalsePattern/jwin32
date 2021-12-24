@@ -232,10 +232,9 @@ Finally, the module info for the project is generated, hiding the internal code 
 
 
 ## 10. Changelog
-### [dev] - current development version
-#### Added
-* GUID static getters. This should resolve issues with unresolved symbols when retrieving most (but not all) IID_... MemorySegments.
+### [0.5.1] - 2021-12-24
 #### Changed
+* GUID getters. This should resolve issues with unresolved symbols when retrieving most (but not all) IID_... MemorySegments.
 * Rewrote build script to do everything in one go through maven
 
 ### [0.5.0] - 2021-12-24
