@@ -126,8 +126,7 @@ You can check the full list of all known non-issue warnings in `JEXTRACT_WARNING
 
 If you see any other kinds of errors, go back to the dependency setup step, download the Windows 10 developer virtual
 machine, and redo the setup inside it. If it fails in the virtual machine too, only then should you create a new
-issue concerning this step. Any issues reported in this step, which happened outside the virtual machine will be
-automatically assumed to be caused by an abnormal system configuration and will be tagged with `wontfix` and `cant-read`.
+issue concerning this step.
 
 The wrapper classes simplify interaction with structs and COM objects, and also turn many `#define`s
 into `public static final` variables, which can then be used in switch statements
