@@ -42,6 +42,14 @@
 
     #include <Windows.h>
 
+    //GUID support
+    #include <guiddef.h>
+
+    //DXGI
+    #ifdef DXGI
+        #include <dxgi.h>
+    #endif
+
     //Direct3D
     #ifdef JWIN32_D3D
         #include "d3d/d3d.h"
