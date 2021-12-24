@@ -22,6 +22,9 @@
 package com.falsepattern.jwin32.internal.conversion;
 
 import com.falsepattern.jwin32.internal.conversion.common.*;
+import com.falsepattern.jwin32.internal.conversion.special.SpecialBehaviour;
+import com.falsepattern.jwin32.internal.conversion.special.StructGUID;
+import jdk.incubator.foreign.CLinker;
 import jdk.incubator.foreign.GroupLayout;
 import jdk.incubator.foreign.MemoryLayout;
 import jdk.incubator.foreign.ValueLayout;
@@ -31,10 +34,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Stream;
 
+import static jdk.incubator.foreign.CLinker.C_CHAR;
+
 public class Struct {
     private static final CField SEGMENT_FIELD = new CField();
     private static final CConstructor SUPER_CALL_ASSIGN = new CConstructor();
     private static final CConstructor SUPER_CALL_ALLOCATOR = new CConstructor();
+    private static final SpecialBehaviour[] SPECIAL_BEHAVIOURS = SpecialBehaviour.genBehaviours();
+
     static {
         SEGMENT_FIELD.accessSpecifier.vis = AccessSpecifier.Visibility.PUBLIC;
         SEGMENT_FIELD.accessSpecifier.fin = true;
@@ -65,6 +72,12 @@ public class Struct {
         implementation.addField(SEGMENT_FIELD);
         implementation.addConstructor(genSetterConstructor());
         implementation.addConstructor(genAllocatorConstructor(parent));
+        for (var behaviour : SPECIAL_BEHAVIOURS) {
+            if (behaviour.isApplicableBase(layout, pkg, parent)) {
+                behaviour.applyBaseImpl(implementation, layout, pkg, parent);
+                break;
+            }
+        }
     }
 
     public Struct(String pkg, Class<?> parent, Class<?> baseImpl) {
@@ -77,6 +90,12 @@ public class Struct {
         implementation.superclass = baseWrapper;
         implementation.addConstructor(SUPER_CALL_ASSIGN);
         implementation.addConstructor(SUPER_CALL_ALLOCATOR);
+        for (var behaviour : SPECIAL_BEHAVIOURS) {
+            if (behaviour.isApplicableExtends(pkg, parent, baseImpl)) {
+                behaviour.applyExtendsImpl(implementation, pkg, parent, baseImpl);
+                break;
+            }
+        }
     }
 
     public boolean isBaseImplementation() {

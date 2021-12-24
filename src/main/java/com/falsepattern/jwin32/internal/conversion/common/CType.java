@@ -40,7 +40,19 @@ public record CType(String name, String simpleName, boolean primitive) {
     public static final CType RESOURCE_SCOPE = new CType(ResourceScope.class);
     public static final CType WIN32 = new CType(Win32.class);
     public CType(Class<?> clazz) {
-        this(clazz.getName().replace('$', '.'), getSimpleString(clazz), clazz.isPrimitive());
+        this(getBaseTypeOfNDimensionalArray(clazz).getName().replace('$', '.'), getSimpleString(clazz), getBaseTypeOfNDimensionalArray(clazz).isPrimitive());
+    }
+
+    private static Class<?> getBaseTypeOfNDimensionalArray(Class<?> clazz) {
+        while (clazz.isArray()) {
+            clazz = clazz.componentType();
+        }
+        return clazz;
+    }
+
+    private static String unwrapArrayBaseTypeName(Class<?> clazz) {
+        if (clazz.isArray()) return unwrapArrayBaseTypeName(clazz.componentType());
+        return clazz.getName().replace('$', '.');
     }
 
     private static String getSimpleString(Class<?> clazz) {
