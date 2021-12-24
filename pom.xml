@@ -28,7 +28,7 @@ SOFTWARE.
 
     <groupId>com.falsepattern</groupId>
     <artifactId>jwin32</artifactId>
-    <version>0.5.0</version>
+    <version>0.5.0-dev</version>
 
     <properties>
         <java.version>17</java.version>
@@ -73,6 +73,27 @@ SOFTWARE.
                         <mainClass>com.falsepattern.jwin32.internal.conversion.Translator</mainClass>
                     </arguments>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <execution>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <exec executable="cmd.exe" spawn="false">
+                                    <arg value="/c"/>
+                                    <arg value="buildscript\\generate.bat"/>
+                                </exec>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
