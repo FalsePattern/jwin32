@@ -19,7 +19,8 @@ A Project Panama-based mapping + wrapper generator for win32 headers.
 6. [Linking libraries](#6-linking-libraries)
 7. [What next?](#7-what-next)
 8. [Inspiration](#8-inspiration)
-9. [Changelog](#9-changelog)
+9. [Detailed description of the postprocessor](#9-detailed-description-of-the-postprocessor)
+10. [Changelog](#10-changelog)
 
 ## 0. Disclaimer
 This project is not endorsed by nor affiliated with either Microsoft, Oracle, nor the OpenJDK project.
@@ -203,8 +204,37 @@ While scouting the web for COM implementations in java, i stumbled upon an artic
 language called J++, and lawsuit between Sun Microsystems and Microsoft, which eventually lead to the creation of the
 .NET framework and the C# programming language.
 
-## 9. Changelog
+## 9. Detailed description of the postprocessor
+The heart of this project, where most of the magic is done, resides in com/falsepattern.jwin32.internal.
+
+The classes inside this package and it's subpackages are responsible for analyzing the raw jextract mappings, generating COM and struct wrappers, generating special behaviour for specific types, and so on.
+
+The following paragraphs describe the inner workings of the postprocessor, and how it transforms an obtuse harder-than-C API into a semi-usable, Java style mapping.
+
+The first step is file retrieval and filtering.
+Filtering is required, because some classes have unstable mappings, which immediately crash the JVM when the class is loaded.
+
+Next, the first pass of the conversion is run. This generates the primitive implementations for COM objects, and also finds all of the structs.
+
+Logically identical structs (with the exact same memory layout and naming scheme) get turned into subclasses of an existing root implementation. This avoids duplicate code, and makes these types interoperable through typecasting.
+
+After that, the file list is scanned a second time for any remaining duplicate structs.
+
+With these passes completed, the converter generates getters for nested structs, and at this point, the main code generation step is finished.
+
+At this point, the generated structs and COM objects are complete, and are written to the filesystem.
+
+Next up, the code scans through the file list again, and extracts all primitive constants from the mappings into `static final` fields, allowing their use in switch statements.
+
+The files are scanned one last time, and any GUID references are replaced with static initializers, if available. This avoids runtime linking errors, as most of these GUIDs are stored in static C libraries and cannot be retrieved with `System.loadLibrary()`.
+
+Finally, the module info for the project is generated, hiding the internal code from the public side.
+
+
+## 10. Changelog
 ### [dev] - current development version
+#### Added
+* GUID static getters. This should resolve issues with unresolved symbols when retrieving most (but not all) IID_... MemorySegments.
 #### Changed
 * Rewrote build script to do everything in one go through maven
 
