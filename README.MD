@@ -211,14 +211,16 @@ language called J++, and lawsuit between Sun Microsystems and Microsoft, which e
 .NET framework and the C# programming language.
 
 ## 9. Changelog
-### [0.5.0] - currently in development
+### [0.5.0] - 2021-12-24
 #### Added
 * String and pointer constant extraction
 * Internal code encapsulation using project jigsaw's module-info.java system
 * Bat files for the compile step
 * Static wrapper methods for MemoryUtil singleton's MemoryAllocator
 * Copyright notices to all source files and build scripts
-* Some basic win32 macros. More to come.
+* Some basic win32 macros.
+* Special logic for GUIDs, for simpler creation of GUID structs used in COM.
+* Added DXGI to the config file
 
 #### Changed
 * C headers are now modularized, and can be configured by the user before jextract-ing.
