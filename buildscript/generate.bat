@@ -18,7 +18,17 @@ REM AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 REM LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 REM OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 REM SOFTWARE.
-call .\cleanup.bat
+echo Cleaning up folders...
+rmdir /S /Q .\src\main\java\win32 > nul
+del .\src\main\java\module-info.java > nul
+echo Creating empty folders...
+mkdir .\src\main\java\win32
+mkdir .\src\main\java\win32\pure
+mkdir .\src\main\java\win32\mapped
+mkdir .\src\main\java\win32\mapped\com
+mkdir .\src\main\java\win32\mapped\struct
+mkdir .\src\main\java\win32\mapped\constants
+echo Cleanup finished!
 echo Generating panama mappings...
 REM Edit this line if you want to make custom mappings:
 jextract --source --header-class-name Win32 -d .\src\main\java -t win32.pure .\c\native.h
