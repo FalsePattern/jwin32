@@ -103,7 +103,8 @@ static final MemorySegment \\w+\\$SEGMENT = RuntimeHelper\\.lookupGlobalVariable
                                 .replaceAll((match) -> {
                                     var guidName = match.group(1);
                                     if (guidMap.containsKey(guidName)) {
-                                        return ("    static final MemorySegment " + guidName + "$SEGMENT = MemorySegment.ofArray(" + guidMap.get(guidName) + ");\n").replace("$", "\\$");
+                                        return ("static final MemorySegment " + guidName + "$SEGMENT = MemorySegment.allocateNative(16, MemorySegment.globalNativeSegment().scope());\n" +
+                                                "static {" + guidName + "$SEGMENT.copyFrom(MemorySegment.ofArray(" + guidMap.get(guidName) + "));}\n").replace("$", "\\$");
                                     } else if (guidName.contains("IID")) {
                                         synchronized (log) {
                                             log.append("GUID mapping not found: ").append(guidName).append('\n');
