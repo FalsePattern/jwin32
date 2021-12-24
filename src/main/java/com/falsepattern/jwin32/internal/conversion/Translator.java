@@ -22,6 +22,7 @@
 package com.falsepattern.jwin32.internal.conversion;
 
 import com.falsepattern.jwin32.internal.conversion.common.CClass;
+import com.falsepattern.jwin32.internal.guid.GUIDHunter;
 import jdk.incubator.foreign.GroupLayout;
 
 import java.io.File;
@@ -158,6 +159,13 @@ public class Translator {
             for (var c: constants) {
                 Files.writeString(Path.of("./src/main/java/win32/mapped/constants/" + c.name + ".java"), c.toString());
             }
+        }
+        {
+            System.out.println("Extracting COM object GUIDs from third party code...");
+            var hunter = new GUIDHunter(new File(String.valueOf(Path.of("./cs_guid_definitions/sources"))));
+            var log = hunter.injectIntoMappings(files);
+            Files.writeString(Path.of("./guidlog.txt"), log);
+            System.out.println("GUID extraction complete! See guidlog.txt for IID_ fields that didn't receive static mappings.");
         }
         System.out.println("Transformations complete!");
         System.out.println("Generating module info...");
