@@ -46,7 +46,7 @@
     #include <guiddef.h>
 
     //DXGI
-    #ifdef DXGI
+    #ifdef JWIN32_DXGI
         #include <dxgi.h>
     #endif
 
