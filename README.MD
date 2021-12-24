@@ -13,8 +13,8 @@ A Project Panama-based mapping + wrapper generator for win32 headers.
 0. [Disclaimer](#0-disclaimer)
 1. [What is Project Panama](#1-what-is-project-panama)
 2. [Dependencies](#2-dependencies)
-3. [Generating panama mappings](#3-generating-panama-mappings)
-4. [Generating wrappers and jar](#4-generating-wrappers-and-jar)
+3. [Selecting libraries](#3-selecting-libraries-to-be-made-available-in-java)
+4. [Generating mappings, wrappers and jar](#4-generating-mappings-wrappers-and-jar)
 5. [Running code with panama](#5-running-code-with-panama)
 6. [Linking libraries](#6-linking-libraries)
 7. [What next?](#7-what-next)
@@ -102,44 +102,38 @@ when installing VS), you can skip this dependency.
 
    ### At this point, restart your system to make sure that every program has the correct system variables available. (when running the VM, only restart the VM).
 
-## 3. Generating panama mappings
+## 3. Selecting libraries to be made available in java
 First off, go into the `c` directory, and open the `native.h` file. In this file you can configure what you want to include.
 
 Currently, you can select the following:
 * Windows.h configurations using `#define NO...` defines.
 * Direct3D version. You can choose any combination of directx 9, 10, 11, or 12. You can also choose none of them.
+* DXGI
 
-Run the `generate.bat` file.
+## 4. Generating mappings, wrappers and jar
+After 0.5.0, the build script was unified, and the entire process is now done in one go.
 
-   You can ignore errors that match one of these examples:
-   * `WARNING: Using incubator modules: jdk.incubator.jextract, jdk.incubator.foreign`
-   * `WARNING: Layout size not available for ...`
-   * `WARNING: skipping ... because of unsupported type usage: long ...`
-   
-   These warnings are usually harmless, and can be ignored.
-   
-   You can check the full list of all known non-issue warnings in `JEXTRACT_WARNINGS.txt`
-   
-   If you see any other kinds of errors, go back to the dependency setup step, download the Windows 10 developer virtual
-   machine, and redo the setup inside it. If it fails in the virtual machine too, only then should you create a new
-   issue concerning this step. Any issues reported in this step, which happened outside the virtual machine will be
-   automatically assumed to be caused by an abnormal system configuration and will be tagged with `wontfix` and `cant-read`.
+The `build_install.bat` script installs the compiled jar files into the local maven repository.
 
-### IF YOU USED THE WINDOWS 10 VIRTUAL MACHINE FOR THIS STEP
-Copy the `src/main/java/win32` folder into the same directory on your host system. After that,
-you no longer need the virtual machine.
+The `build_package.bat` script outputs the compiled jar files into the `target` directory.
 
-## 4. Generating wrappers and jar
-After the panama mappings have been generated, the next step is generating the wrappers and the jar file.
+You can safely ignore errors that match one of these examples:
+* `WARNING: Using incubator modules: jdk.incubator.jextract, jdk.incubator.foreign`
+* `WARNING: Layout size not available for ...`
+* `WARNING: skipping ... because of unsupported type usage: long ...`
 
-These wrapper classes simplify interaction with structs and COM objects, and also turn many `#define`s
+You can check the full list of all known non-issue warnings in `JEXTRACT_WARNINGS.txt`   
+
+If you see any other kinds of errors, go back to the dependency setup step, download the Windows 10 developer virtual
+machine, and redo the setup inside it. If it fails in the virtual machine too, only then should you create a new
+issue concerning this step. Any issues reported in this step, which happened outside the virtual machine will be
+automatically assumed to be caused by an abnormal system configuration and will be tagged with `wontfix` and `cant-read`.
+
+The wrapper classes simplify interaction with structs and COM objects, and also turn many `#define`s
 into `public static final` variables, which can then be used in switch statements
 (`jextract` puts `#define`s into getter methods, which cannot be used with switch statements).
 
 To do this, simply run one of the `build_` batch files and wait until it finishes.
-
-The `build_install.bat` script installs the compiled jar files into the local maven repository.
-The `build_package.bat` script outputs the compiled jar file into the `target` directory.
 
 Wrapper classes are just the original struct/COM interface name with a `_J` suffix.
 
