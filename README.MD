@@ -204,6 +204,10 @@ language called J++, and lawsuit between Sun Microsystems and Microsoft, which e
 .NET framework and the C# programming language.
 
 ## 9. Changelog
+### [dev] - current development version
+#### Changed
+* Rewrote build script to do everything in one go through maven
+
 ### [0.5.0] - 2021-12-24
 #### Added
 * String and pointer constant extraction
