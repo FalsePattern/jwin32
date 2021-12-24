@@ -73,6 +73,12 @@
 #endif
 
 
+//DXGI
+//
+//Uncomment if you want to use the DXGI library.
+
+//#define JWIN32_DXGI
+
 
 //Direct3D
 //
