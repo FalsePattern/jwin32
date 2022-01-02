@@ -31,6 +31,21 @@ part of this source code.
 The project source code does not include generated and mapped files because there's a lot of files (more than 10k after
 every class is generated)
 
+Libraries with builtin support:
+* windows.h and most of the stuff it pulls in
+* direct3d 9-12
+* dxgi
+
+I'm considering adding more libraries as "supported by default", such as DirectAudio, Direct2D, etc (basically the entire DirectX collection),
+as well as later expanding into non-win32 space, such as GLFW and OpenGL (only planned once panama comes out of incubator
+and becomes an experimental/stable feature usable in mainline releases). During the incubator phase, this project will be limited to
+windows libraries.
+
+Any other libraries are currently unverified and may break. The built-in COM support is only verified with Direct3D
+COM objects, and may break when used with the actual COM system. More precisely, RuntimeClass GUIDs and Interface GUIDs
+cannot be retrieved during runtime, and MUST be specified either using #define constants, or using the GUID_J class.
+There's no way around this limitation at this time.
+
 ## 1. What is Project Panama
 Java's project panama is an incubating feature of java, only accessible on a specific branch, is a brand-new solution
 that gets rid of writing JNI or JNA wrappers for native libraries, and instead almost completely automates the process,
