@@ -1,5 +1,10 @@
 # JWin32
 A Project Panama-based mapping + wrapper generator for win32 headers.
+
+## IMPORTANT NOTICE
+- I have migrated to GNU/Linux, and can no longer keep this project maintained. If anyone is willing to carry the torch, just open an issue and i will put a link to the fork at the top of this readme.
+- This project only works on the incubator release of Panama on java 17. Java 19 has different classes for panama, so the project DOES NOT COMPILE ON JDK 19!
+
 ## IMPORTANT
 * ### As of 0.5.0, no prebuilt jars will be provided. You must generate the mappings yourself.
   This is due to the new modular header system, which makes it impractical to include prebuilt jars for every combination.
